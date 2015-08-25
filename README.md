@@ -19,7 +19,7 @@ To allow the code to be maximally generic, it is implemented as all macros, and
 is thus header only. Usage is simple:
 
 	/* if this is defined, then the vector will double in capacity each 
-	 * it runs out of space if it is not defined, then the vector will
+	 * time it runs out of space. if it is not defined, then the vector will
 	 * be conservative, and will have a capcity no larger than necessary.
 	 * having this defined will minimize how often realloc gets called.
 	 */
