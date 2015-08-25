@@ -49,6 +49,14 @@ do {                                    \
 	((vec) ? ((size_t *)(vec))[-2] : (size_t)0)
 
 /**
+ * @brief vector_empty - returns non-zero if the vector is empty
+ * @param vec - the vector
+ * @return non-zero if empty, zero if non-empty
+ */
+#define vector_empty(vec) \
+	(vector_size(vec) == 0)
+
+/**
  * @brief vector_grow - For internal use, ensures that the vector is at least <count> elements big
  * @param vec - the vector
  * @param size - the new capacity to set
