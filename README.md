@@ -31,9 +31,10 @@ is thus header only. Usage is simple:
 	int main(int argc, char *argv[]) {
 
 		/* this is the variable that will store the array, you can have
-		 * a vector of any type! NULL will have a size and capacity of 0.
-		 * additionally, vector_begin and vector_end will return NULL on
-		 * a NULL vector.
+		 * a vector of any type! For example, you may write float *v = NULL, 
+		 * and you'd have a vector of floats :-). NULL will have a size 
+		 * and capacity of 0. additionally, vector_begin and vector_end will 
+		 * return NULL on a NULL vector.
 		 */
 		int *v = NULL;
 
