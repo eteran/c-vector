@@ -4,7 +4,7 @@ familiar set of operations.
 
 It works by using the same trick as many allocators, which is to slightly 
 allocate more data than requested, and using that extra padding in the front
-as storage for meta-data. Thus at any non-null vector looks like this in memory:
+as storage for meta-data. Thus any non-null vector looks like this in memory:
 
 	+------+----------+---------+
 	| size | capacity | data... |
