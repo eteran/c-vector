@@ -7,6 +7,9 @@
 int main(int argc, char *argv[]) {
 
 	int *v = NULL;
+	
+	(void)argc;
+	(void)argv;
 
 	vector_push_back(v, 10);
 	vector_push_back(v, 20);
@@ -20,7 +23,7 @@ int main(int argc, char *argv[]) {
 	vector_push_back(v, 600);
 	vector_push_back(v, 700);		
 
-	printf("pointer : %p\n",  v);
+	printf("pointer : %p\n",  (void *)v);
 	printf("capacity: %lu\n", vector_capacity(v));
 	printf("size    : %lu\n", vector_size(v));
 	
@@ -34,5 +37,6 @@ int main(int argc, char *argv[]) {
 	}
 	
 	vector_free(v);
+	return 0;
 
 }
