@@ -37,8 +37,8 @@ is thus header only. Usage is simple:
 		 * return NULL on a NULL vector.
 		 */
 		int *v = NULL;
-
-		/* add some elements to the back
+		
+		/* add some elements to the back */
 		vector_push_back(v, 10);
 		vector_push_back(v, 20);
 		vector_push_back(v, 30);
@@ -46,9 +46,8 @@ is thus header only. Usage is simple:
 		/* and remove one too */
 		vector_pop_back(v);
 
-
 		/* print out some stats about the vector */
-		printf("pointer : %p\n",  v);
+		printf("pointer : %p\n",  (void *)v);
 		printf("capacity: %lu\n", vector_capacity(v));
 		printf("size    : %lu\n", vector_size(v));
 
@@ -57,7 +56,7 @@ is thus header only. Usage is simple:
 			int * it;
 			int i = 0;
 			for(it = vector_begin(v); it != vector_end(v); ++it) {
-				printf("v[%d] = %d\n", i, *it);
+				printf("v[%lu] = %d\n", i, *it);
 				++i;
 			}
 		}
@@ -72,5 +71,6 @@ is thus header only. Usage is simple:
 
 		/* well, we don't have destructors, so let's clean things up */
 		vector_free(v);
-
+		
+		return 0;
 	}
