@@ -6,6 +6,12 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/**
+ * @brief vector_set_capacity - For internal use, sets the capacity variable of the vector
+ * @param vec - the vector
+ * @param size - the new capacity to set
+ * @return void
+ */
 #define vector_set_capacity(vec, size)   \
 do {                                     \
 	if(vec) {                            \
@@ -13,6 +19,12 @@ do {                                     \
 	}                                    \
 } while(0)
 
+/**
+ * @brief vector_set_size - For internal use, sets the size variable of the vector
+ * @param vec - the vector
+ * @param size - the new capacity to set
+ * @return void
+ */
 #define vector_set_size(vec, size)      \
 do {                                    \
 	if(vec) {                           \
@@ -20,13 +32,28 @@ do {                                    \
 	}                                   \
 } while(0)
 
-
+/**
+ * @brief vector_capacity - gets the current capacity of the vector
+ * @param vec - the vector
+ * @return the capacity as a size_t
+ */
 #define vector_capacity(vec) \
 	((vec) ? ((size_t *)(vec))[-1] : (size_t)0)
 
-#define  vector_size(vec) \
+/**
+ * @brief vector_size - gets the current size of the vector
+ * @param vec - the vector
+ * @return the size as a size_t
+ */
+#define vector_size(vec) \
 	((vec) ? ((size_t *)(vec))[-2] : (size_t)0)
 
+/**
+ * @brief vector_grow - For internal use, ensures that the vector is at least <count> elements big
+ * @param vec - the vector
+ * @param size - the new capacity to set
+ * @return void
+ */
 #define vector_grow(vec, count) \
 do {                                                                                              \
 	if(!(vec)) {                                                                                  \
@@ -44,11 +71,21 @@ do {                                                                            
 	}                                                                                             \
 } while(0)
 
+/**
+ * @brief vector_pop_back - removes the last element from the vector
+ * @param vec - the vector
+ * @return void
+ */
 #define vector_pop_back(vec) \
 do {                                              \
 	vector_set_size((vec), vector_size(vec) - 1); \
 } while(0)
 
+/**
+ * @brief vector_free - frees all memory associated with the vector
+ * @param vec - the vector
+ * @return void
+ */
 #define vector_free(vec) \
 do { \
 	if(vec) {                                \
@@ -57,13 +94,29 @@ do { \
 	}                                        \
 } while(0)
 
+/**
+ * @brief vector_begin - returns an iterator to first element of the vector
+ * @param vec - the vector
+ * @return a pointer to the first element
+ */
 #define vector_begin(vec) \
 	(vec)
-	
+
+/**
+ * @brief vector_end - returns an iterator to one past the last element of the vector
+ * @param vec - the vector
+ * @return a pointer to one past the last element
+ */	
 #define vector_end(vec) \
 	&((vec)[vector_size(vec)])
 
 
+/**
+ * @brief vector_push_back - adds an element to the end of the vector
+ * @param vec - the vector
+ * @param value - the value to add 
+ * @return void
+ */	
 #ifdef LOGARITHMIC_GROWTH
 
 #define vector_push_back(vec, value) \
