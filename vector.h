@@ -63,20 +63,20 @@ do {                                    \
  * @return void
  */
 #define vector_grow(vec, count) \
-do {                                                                                              \
-	if(!(vec)) {                                                                                  \
-		size_t *__p = (size_t *)malloc((count) * sizeof(*(vec)) + (sizeof(size_t) * 2));          \
-		assert(__p);                                                                              \
-		(vec) = (void *)(&__p[2]);                                                                \
-		vector_set_capacity((vec), (count));                                                      \
-		vector_set_size((vec), 0);		                                                          \
-	} else {                                                                                      \
-		size_t *__p1 = &((size_t *)(vec))[-2];                                                    \
-		size_t *__p2 = (size_t *)realloc(__p1, ((count) * sizeof(*(vec))+ (sizeof(size_t) * 2))); \
-		assert(__p2);                                                                             \
-		(vec) = (void *)(&__p2[2]);                                                               \
-		vector_set_capacity((vec), (count));                                                      \
-	}                                                                                             \
+do {                                                                                    \
+	if(!(vec)) {                                                                        \
+		size_t *__p = malloc((count) * sizeof(*(vec)) + (sizeof(size_t) * 2));          \
+		assert(__p);                                                                    \
+		(vec) = (void *)(&__p[2]);                                                      \
+		vector_set_capacity((vec), (count));                                            \
+		vector_set_size((vec), 0);		                                                \
+	} else {                                                                            \
+		size_t *__p1 = &((size_t *)(vec))[-2];                                          \
+		size_t *__p2 = realloc(__p1, ((count) * sizeof(*(vec))+ (sizeof(size_t) * 2))); \
+		assert(__p2);                                                                   \
+		(vec) = (void *)(&__p2[2]);                                                     \
+		vector_set_capacity((vec), (count));                                            \
+	}                                                                                   \
 } while(0)
 
 /**
