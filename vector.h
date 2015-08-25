@@ -2,9 +2,9 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <assert.h>
+#include <stddef.h> /* for size_t */
+#include <stdlib.h> /* for malloc/realloc/free */
+#include <assert.h> /* for assert */
 
 /**
  * @brief vector_set_capacity - For internal use, sets the capacity variable of the vector
