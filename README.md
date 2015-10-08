@@ -9,6 +9,8 @@ as storage for meta-data. Thus any non-null vector looks like this in memory:
 	+------+----------+---------+
 	| size | capacity | data... |
 	+------+----------+---------+
+	                  ^
+	                  | user's pointer
 
 Where the user is given a pointer to first element of `data`. This way the 
 code has trivial access to the necessary meta-data, but the user need not be
