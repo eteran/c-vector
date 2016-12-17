@@ -69,7 +69,7 @@ do {                                                                            
 		assert(__p);                                                                    \
 		(vec) = (void *)(&__p[2]);                                                      \
 		vector_set_capacity((vec), (count));                                            \
-		vector_set_size((vec), 0);		                                                \
+		vector_set_size((vec), 0);                                                      \
 	} else {                                                                            \
 		size_t *__p1 = &((size_t *)(vec))[-2];                                          \
 		size_t *__p2 = realloc(__p1, ((count) * sizeof(*(vec))+ (sizeof(size_t) * 2))); \
@@ -114,7 +114,7 @@ do { \
  * @brief vector_end - returns an iterator to one past the last element of the vector
  * @param vec - the vector
  * @return a pointer to one past the last element
- */	
+ */
 #define vector_end(vec) \
 	&((vec)[vector_size(vec)])
 
@@ -124,13 +124,13 @@ do { \
  * @param vec - the vector
  * @param value - the value to add 
  * @return void
- */	
+ */
 #ifdef LOGARITHMIC_GROWTH
 
 #define vector_push_back(vec, value) \
 do {                                                        \
 	size_t __cap = vector_capacity(vec);                    \
-	if(__cap <= vector_size(vec)) {		                    \
+	if(__cap <= vector_size(vec)) {                         \
 		vector_grow((vec), !__cap ? __cap + 1 : __cap * 2); \
 	}                                                       \
 	vec[vector_size(vec)] = (value);                        \
@@ -142,7 +142,7 @@ do {                                                        \
 #define vector_push_back(vec, value) \
 do {                                              \
 	size_t __cap = vector_capacity(vec);          \
-	if(__cap <= vector_size(vec)) {		          \
+	if(__cap <= vector_size(vec)) {               \
 		vector_grow((vec), __cap + 1);            \
 	}                                             \
 	vec[vector_size(vec)] = (value);              \
