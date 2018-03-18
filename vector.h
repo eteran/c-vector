@@ -124,6 +124,25 @@ do { \
 } while(0)
 
 /**
+ * @brief vector_swap - swaps element at indices i and j
+ * @param vec - the vector
+ * @param i - index of element to be swapped
+ * @param j - index of element to swap with
+ * @return void
+ */
+#define SWAP(x, y, T) do { T SWAP = x; (x) = y; (y) = SWAP; } while (0)
+#define vector_swap(vec, i, j, T) \
+do {                                     \
+	if(vec) {                            \
+		size_t __sz = vector_size(vec);  \
+		if((i) < __sz && (j) < __sz) {   \
+			SWAP((vec)[i], (vec)[j], T); \
+		}                                \
+	}                                    \
+} while(0)
+
+
+/**
  * @brief vector_begin - returns an iterator to first element of the vector
  * @param vec - the vector
  * @return a pointer to the first element
