@@ -90,6 +90,26 @@ do {                                              \
 } while(0)
 
 /**
+ * @brief vector_erase - removes the element at index i from the vector
+ * @param vec - the vector
+ * @param i - index of element to remove
+ * @return void
+ */
+#define vector_erase(vec, i) \
+do {                                                   \
+	if (vec) {                                         \
+		const size_t __sz = vector_size(vec);          \
+		if ((i) < __sz) {                              \
+			vector_set_size((vec), __sz - 1);          \
+			size_t __x;                                \
+			for (__x = (i); __x < (__sz - 1); ++__x) { \
+				(vec)[__x] = (vec)[__x + 1];           \
+			}                                          \
+		}                                              \
+   }                                                   \
+} while(0)
+
+/**
  * @brief vector_free - frees all memory associated with the vector
  * @param vec - the vector
  * @return void
@@ -105,7 +125,7 @@ do { \
 /**
  * @brief vector_begin - returns an iterator to first element of the vector
  * @param vec - the vector
- * @return a pointer to the first element
+ * @return a pointer to the first element (or NULL)
  */
 #define vector_begin(vec) \
 	(vec)
@@ -113,10 +133,10 @@ do { \
 /**
  * @brief vector_end - returns an iterator to one past the last element of the vector
  * @param vec - the vector
- * @return a pointer to one past the last element
+ * @return a pointer to one past the last element (or NULL)
  */
 #define vector_end(vec) \
-	&((vec)[vector_size(vec)])
+	((vec) ? &((vec)[vector_size(vec)]) : NULL)
 
 
 /**
