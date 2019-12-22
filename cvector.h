@@ -1,10 +1,6 @@
 
-#ifndef __CVECTOR_H__
-#define __CVECTOR_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#ifndef CVECTOR_H_
+#define CVECTOR_H_
 
 #include <stddef.h> /* for size_t */
 #include <stdlib.h> /* for malloc/realloc/free */
@@ -186,8 +182,4 @@ do {                                              \
 
 #endif /* CVECTOR_LOGARITHMIC_GROWTH */
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
-#endif /* __CVECTOR_H__ */
+#endif /* CVECTOR_H_ */

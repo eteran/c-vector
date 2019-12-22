@@ -4,6 +4,7 @@
         "cvector"
     ],
     "files.associations": {
-        "cvector.h": "c"
+        "cvector.h": "c",
+        "stddef.h": "c"
     }
 }
