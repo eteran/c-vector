@@ -5,6 +5,7 @@
 #include <assert.h> /* for assert */
 #include <stddef.h> /* for size_t */
 #include <stdlib.h> /* for malloc/realloc/free */
+#include <string.h> /* for memset */
 
 /**
  * @brief vector_set_capacity - For internal use, sets the capacity variable of
@@ -64,17 +65,20 @@
  */
 #define vector_grow(vec, count)                                                \
   do {                                                                         \
+    const size_t __size = count * sizeof(*(vec)) + (sizeof(size_t) * 2);       \
     if (!(vec)) {                                                              \
-      size_t *__p = malloc((count) * sizeof(*(vec)) + (sizeof(size_t) * 2));   \
+      size_t *__p = malloc(__size);                                            \
       assert(__p);                                                             \
+      memset(__p, 0, __size * sizeof(*(vec)));                                 \
       (vec) = (void *)(&__p[2]);                                               \
       vector_set_capacity((vec), (count));                                     \
       vector_set_size((vec), 0);                                               \
     } else {                                                                   \
       size_t *__p1 = &((size_t *)(vec))[-2];                                   \
-      size_t *__p2 =                                                           \
-          realloc(__p1, ((count) * sizeof(*(vec)) + (sizeof(size_t) * 2)));    \
+      size_t *__p2 = realloc(__p1, __size);                                    \
       assert(__p2);                                                            \
+      memset(__p2 + (sizeof(*(vec)) * (2 + vector_capacity(vec))), 0,          \
+             sizeof(*(vec)) * (__size - vector_capacity(vec)));                \
       (vec) = (void *)(&__p2[2]);                                              \
       vector_set_capacity((vec), (count));                                     \
     }                                                                          \
