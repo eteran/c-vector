@@ -79,6 +79,7 @@
       size_t *__p1 = &((size_t *)(vec))[-2];                                   \
       size_t *__p2 = realloc(__p1, __size);                                    \
       assert(__p2);                                                            \
+      memset((char *)__p2 + __prev_size, 0, __size - __prev_size);             \
       (vec) = (void *)(&__p2[2]);                                              \
       vector_set_capacity((vec), (count));                                     \
     }                                                                          \
