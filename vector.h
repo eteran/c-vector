@@ -159,11 +159,11 @@
 
 #else
 
-#define vector_maybe_grow(vec, capacity)                                       \
+#define vector_maybe_grow(vec, index)                                          \
   do {                                                                         \
     const size_t __cap = vector_capacity(vec);                                 \
-    if (__cap <= vector_size(vec)) {                                           \
-      vector_grow((vec), __cap + 1);                                           \
+    if (__cap <= index) {                                                      \
+      vector_grow((vec), index + 1);                                           \
     }                                                                          \
   } while (0)
 
