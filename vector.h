@@ -25,7 +25,7 @@
  * @brief vector_set_size - For internal use, sets the size variable of the
  * vector
  * @param vec - the vector
- * @param size - the new capacity to set
+ * @param size - the new size to set
  * @return void
  */
 #define vector_set_size(vec, size)                                             \
@@ -65,20 +65,20 @@
  */
 #define vector_grow(vec, count)                                                \
   do {                                                                         \
-    const size_t __size = count * sizeof(*(vec)) + (sizeof(size_t) * 2);       \
+    const size_t __size = (count) * sizeof(*(vec)) + (sizeof(size_t) * 2);     \
     if (!(vec)) {                                                              \
       size_t *__p = malloc(__size);                                            \
       assert(__p);                                                             \
-      memset(__p, 0, __size * sizeof(*(vec)));                                 \
+      memset(__p, 0, __size);                                                  \
       (vec) = (void *)(&__p[2]);                                               \
       vector_set_capacity((vec), (count));                                     \
       vector_set_size((vec), 0);                                               \
     } else {                                                                   \
+      const size_t __prev_size =                                               \
+          vector_capacity(vec) * sizeof(*(vec)) + sizeof(size_t) * 2;          \
       size_t *__p1 = &((size_t *)(vec))[-2];                                   \
       size_t *__p2 = realloc(__p1, __size);                                    \
       assert(__p2);                                                            \
-      memset(__p2 + (sizeof(*(vec)) * (2 + vector_capacity(vec))), 0,          \
-             sizeof(*(vec)) * (__size - vector_capacity(vec)));                \
       (vec) = (void *)(&__p2[2]);                                              \
       vector_set_capacity((vec), (count));                                     \
     }                                                                          \
@@ -142,6 +142,32 @@
  */
 #define vector_end(vec) ((vec) ? &((vec)[vector_size(vec)]) : NULL)
 
+#ifdef LOGARITHMIC_GROWTH
+
+#define vector_maybe_grow(vec, index)                                          \
+  do {                                                                         \
+    size_t __cap = vector_capacity(vec);                                       \
+    if (__cap <= index) {                                                      \
+      if (!__cap)                                                              \
+        __cap = 1;                                                             \
+      while (__cap <= index)                                                   \
+        __cap = __cap << 1;                                                    \
+      vector_grow((vec), __cap);                                               \
+    }                                                                          \
+  } while (0)
+
+#else
+
+#define vector_maybe_grow(vec, capacity)                                       \
+  do {                                                                         \
+    const size_t __cap = vector_capacity(vec);                                 \
+    if (__cap <= vector_size(vec)) {                                           \
+      vector_grow((vec), __cap + 1);                                           \
+    }                                                                          \
+  } while (0)
+
+#endif
+
 /**
  * @brief vector_push_back - adds an element to the end of the vector
  * @param vec - the vector
@@ -173,5 +199,10 @@
   } while (0)
 
 #endif
+
+#define vector_set(vec, i, value)                                              \
+  vector_maybe_grow(vec, i);                                                   \
+  vec[i] = (value);                                                            \
+  vector_set_size((vec), i + 1);
 
 #endif

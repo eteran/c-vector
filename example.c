@@ -55,5 +55,26 @@ int main(int argc, char *argv[]) {
   /* well, we don't have destructors, so let's clean things up */
   vector_free(v);
 
+  const char **sv = NULL;
+  vector_set(sv, 1, "one");
+  printf("pointer : %p\n", (void *)sv);
+  printf("capacity: %lu\n", vector_capacity(sv));
+  printf("size    : %lu\n", vector_size(sv));
+
+  vector_set(sv, 3, "three");
+
+  printf("pointer : %p\n", (void *)sv);
+  printf("capacity: %lu\n", vector_capacity(sv));
+  printf("size    : %lu\n", vector_size(sv));
+
+  if (sv) {
+    size_t i;
+    for (i = 0; i < vector_size(sv); ++i) {
+      printf("v[%lu] = %s\n", i, sv[i]);
+    }
+  }
+
+  vector_free(sv);
+
   return 0;
 }
