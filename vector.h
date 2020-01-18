@@ -175,31 +175,13 @@
  * @param value - the value to add
  * @return void
  */
-#ifdef LOGARITHMIC_GROWTH
-
 #define vector_push_back(vec, value)                                           \
   do {                                                                         \
-    size_t __cap = vector_capacity(vec);                                       \
-    if (__cap <= vector_size(vec)) {                                           \
-      vector_grow((vec), !__cap ? __cap + 1 : __cap * 2);                      \
-    }                                                                          \
+    const size_t __new_size = vector_size(vec) + 1;                            \
+    vector_maybe_grow(vec, __new_size);                                        \
     vec[vector_size(vec)] = (value);                                           \
     vector_set_size((vec), vector_size(vec) + 1);                              \
   } while (0)
-
-#else
-
-#define vector_push_back(vec, value)                                           \
-  do {                                                                         \
-    size_t __cap = vector_capacity(vec);                                       \
-    if (__cap <= vector_size(vec)) {                                           \
-      vector_grow((vec), __cap + 1);                                           \
-    }                                                                          \
-    vec[vector_size(vec)] = (value);                                           \
-    vector_set_size((vec), vector_size(vec) + 1);                              \
-  } while (0)
-
-#endif
 
 #define vector_set(vec, i, value)                                              \
   vector_maybe_grow(vec, i);                                                   \
