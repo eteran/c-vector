@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
      * and capacity of 0. additionally, vector_begin and vector_end will
      * return NULL on a NULL vector.
      */
-    cvector_VECTOR(int) v = NULL;
+    cvector_vector_type(int) v = NULL;
 
     (void)argc;
     (void)argv;

@@ -5,6 +5,7 @@
     ],
     "files.associations": {
         "cvector.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "type_traits": "c"
     }
 }

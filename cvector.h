@@ -7,9 +7,9 @@
 #include <assert.h> /* for assert */
 
 /**
- * @brief cvector_VECTOR - The vector type used in this library  
+ * @brief cvector_vector_type - The vector type used in this library  
  */
-#define cvector_VECTOR(type) type *
+#define cvector_vector_type(type) type *
 
 /**
  * @brief cvector_set_capacity - For internal use, sets the capacity variable of the vector
