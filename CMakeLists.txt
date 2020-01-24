@@ -3,6 +3,6 @@ project(c-vector VERSION 0.1.0)
 
 add_library(c-vector INTERFACE)
 
-target_sources(stdcxx-headers INTERFACE 
+target_sources(c-vector INTERFACE 
 	cvector.h
 )
