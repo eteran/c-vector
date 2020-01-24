@@ -1,59 +1,59 @@
-	/* if this is defined, then the vector will double in capacity each 
-	 * time it runs out of space. if it is not defined, then the vector will
-	 * be conservative, and will have a capcity no larger than necessary.
-	 * having this defined will minimize how often realloc gets called.
-	 */
-	#define LOGARITHMIC_GROWTH
+/* if this is defined, then the vector will double in capacity each
+ * time it runs out of space. if it is not defined, then the vector will
+ * be conservative, and will have a capcity no larger than necessary.
+ * having this defined will minimize how often realloc gets called.
+ */
+#define CVECTOR_LOGARITHMIC_GROWTH
 
-	#include "vector.h"
-	#include <stdio.h>
+#include "cvector.h"
+#include <stdio.h>
 
-	int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
-		/* this is the variable that will store the array, you can have
-		 * a vector of any type! For example, you may write float *v = NULL, 
-		 * and you'd have a vector of floats :-). NULL will have a size 
-		 * and capacity of 0. additionally, vector_begin and vector_end will 
-		 * return NULL on a NULL vector.
-		 */
-		int *v = NULL;
-		
-		(void)argc;
-		(void)argv;		
+    /* this is the variable that will store the array, you can have
+     * a vector of any type! For example, you may write float *v = NULL,
+     * and you'd have a vector of floats :-). NULL will have a size
+     * and capacity of 0. additionally, vector_begin and vector_end will
+     * return NULL on a NULL vector.
+     */
+    cvector_vector_type(int) v = NULL;
 
-		/* add some elements to the back */
-		vector_push_back(v, 10);
-		vector_push_back(v, 20);
-		vector_push_back(v, 30);
+    (void)argc;
+    (void)argv;
 
-		/* and remove one too */
-		vector_pop_back(v);
+    /* add some elements to the back */
+    cvector_push_back(v, 10);
+    cvector_push_back(v, 20);
+    cvector_push_back(v, 30);
 
-		/* print out some stats about the vector */
-		printf("pointer : %p\n",  (void *)v);
-		printf("capacity: %lu\n", vector_capacity(v));
-		printf("size    : %lu\n", vector_size(v));
+    /* and remove one too */
+    cvector_pop_back(v);
 
-		/* iterator over the vector using "iterator" style */
-		if(v) {
-			int * it;
-			int i = 0;
-			for(it = vector_begin(v); it != vector_end(v); ++it) {
-				printf("v[%d] = %d\n", i, *it);
-				++i;
-			}
-		}
-		
-		/* iterator over the vector standard indexing too! */
-		if(v) {
-			size_t i;
-			for(i = 0; i < vector_size(v); ++i) {
-				printf("v[%lu] = %d\n", i, v[i]);
-			}
-		}		
+    /* print out some stats about the vector */
+    printf("pointer : %p\n", (void *)v);
+    printf("capacity: %lu\n", cvector_capacity(v));
+    printf("size    : %lu\n", cvector_size(v));
 
-		/* well, we don't have destructors, so let's clean things up */
-		vector_free(v);
-		
-		return 0;
-	}
+    /* iterator over the vector using "iterator" style */
+    if (v) {
+        int *it;
+        int i = 0;
+        for (it = cvector_begin(v); it != cvector_end(v); ++it) {
+            printf("v[%d] = %d\n", i, *it);
+            ++i;
+        }
+    }
+
+    /* iterator over the vector standard indexing too! */
+    if (v) {
+        size_t i;
+        for (i = 0; i < cvector_size(v); ++i) {
+            printf("v[%lu] = %d\n", i, v[i]);
+        }
+    }
+
+    /* well, we don't have destructors, so let's clean things up */
+    cvector_free(v);
+
+    return 0;
+}
