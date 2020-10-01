@@ -64,7 +64,7 @@
 /**
  * @brief cvector_grow - For internal use, ensures that the vector is at least <count> elements big
  * @param vec - the vector
- * @param size - the new capacity to set
+ * @param count - the new capacity to set
  * @return void
  */
 #define cvector_grow(vec, count)                                             \
