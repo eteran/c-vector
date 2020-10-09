@@ -3,7 +3,6 @@
 #define CVECTOR_H_
 
 #include <assert.h> /* for assert */
-#include <stddef.h> /* for size_t */
 #include <stdlib.h> /* for malloc/realloc/free */
 
 /**
