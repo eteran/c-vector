@@ -182,4 +182,17 @@
 
 #endif /* CVECTOR_LOGARITHMIC_GROWTH */
 
+/**
+ * @brief cvector_copy - copy a vector
+ * @param from - the original vector
+ * @param to - destination to which the function copy to
+ * @return void
+ */
+#define cvector_copy(from, to)									\
+	do {														\
+		for(size_t i = 0; i < cvector_size(from); i++) {		\
+			cvector_push_back(to, from[i]);						\
+		}														\
+	} while (0)													\
+
 #endif /* CVECTOR_H_ */
