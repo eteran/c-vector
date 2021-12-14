@@ -32,3 +32,15 @@ add_executable(${TEST_EXE}
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 add_test(NAME test COMMAND ${TEST_EXE})
 add_dependencies(check ${TEST_EXE})
+
+find_program(VALGRIND "valgrind")
+if(VALGRIND)
+	add_custom_target(memcheck
+	COMMAND "${VALGRIND}"
+		--tool=memcheck
+		--leak-check=full
+		--show-reachable=yes
+		--error-exitcode=1
+		$<TARGET_FILE:${TEST_EXE}>
+	)
+endif()
