@@ -16,17 +16,19 @@ PUBLIC
 	${CMAKE_PROJECT_NAME}
 )
 
-# automatically invokes the 'enable_testing()' command (except when the
-# BUILD_TESTING option is turned off).
-include(CTest)
-
+enable_testing()
 set(TEST_EXE "test-c-vector")
 
-# 'make test' will not automatically rebuild the executable if the source
-# has been changed; 'make' or 'make clean && make' need to be run first.
 add_executable(${TEST_EXE}
+	EXCLUDE_FROM_ALL
 	test.c
 )
 
+# 'make test' will not automatically rebuild the executable if the source
+# has been changed; 'make' or 'make clean && make' need to be run first;
+# but there is a workaround
+# https://stackoverflow.com/questions/733475/cmake-ctest-make-test-doesnt-build-tests
+# https://gitlab.kitware.com/cmake/community/-/wikis/doc/tutorials/EmulateMakeCheck
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 add_test(NAME test COMMAND ${TEST_EXE})
-
+add_dependencies(check ${TEST_EXE})
