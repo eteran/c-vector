@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(c-vector VERSION 0.1.0)
-
+add_compile_options(-Wall -Wextra)
 add_library(${CMAKE_PROJECT_NAME} INTERFACE)
 
 target_sources(c-vector INTERFACE
