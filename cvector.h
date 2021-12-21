@@ -131,14 +131,17 @@
 
 /**
  * @brief cvector_copy - copy a vector
- * @param from - the original vector
- * @param to - destination to which the function copy to
+ * @param dest - destination to which the function copy to
+ * @param src - the original vector
  * @return void
  */
-#define cvector_copy(from, to)                                                                                         \
+#define cvector_copy(dest, src)                                                                                        \
     do {                                                                                                               \
-        for (size_t i = 0; i < cvector_size(from); i++) {                                                              \
-            cvector_push_back(to, from[i]);                                                                            \
+        if (src != NULL) {                                                                                             \
+            const size_t sz = cvector_size(src);                                                                       \
+            __cvector_set_capacity(dest, cvector_capacity(src));                                                       \
+            __cvector_set_size(dest, sz);                                                                              \
+            memcpy((dest), (src), sz * sizeof(*(src)));                                                                \
         }                                                                                                              \
     } while (0)                                                                                                        \
 
