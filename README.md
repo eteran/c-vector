@@ -1,6 +1,4 @@
-[![c-cpp-badge]][c-cpp-url]
-[c-cpp-badge]: https://github.com/eteran/c-vector/actions/workflows/cmake.yml/badge.svg
-[c-cpp-url]: https://github.com/eteran/c-vector/actions/workflows/cmake.yml
+[![c-cpp-badge](https://github.com/eteran/c-vector/actions/workflows/cmake.yml/badge.svg)](https://github.com/eteran/c-vector/actions/workflows/cmake.yml)
 
 This is an implementation of a `std::vector` like growable array, but in plain
 C89 code. The result is a type safe, easy to use, dynamic array that has a
