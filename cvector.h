@@ -179,11 +179,11 @@
  */
 #define cvector_copy(from, to)                                                                                         \
     do {                                                                                                               \
-        if ((src) != NULL) {                                                                                           \
-            const size_t cv_sz = cvector_size(src);                                                                    \
+        if ((from)) {                                                                                           \
+            const size_t cv_sz = cvector_size(from);                                                                    \
             cvector_grow(to, cv_sz);                                                                                   \
             cvector_set_size(to, cv_sz);                                                                               \
-            memcpy((to), (from), cv_sz * sizeof(*(src)));                                                              \
+            memcpy((to), (from), cv_sz * sizeof(*(from)));                                                              \
         }                                                                                                              \
     } while (0)                                                                                                        \
 
