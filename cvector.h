@@ -139,7 +139,7 @@
     do {                                                                                                               \
         if (src != NULL) {                                                                                             \
             const size_t sz = cvector_size(src);                                                                       \
-            __cvector_set_capacity(dest, cvector_capacity(src));                                                       \
+            __cvector_grow(dest, sz);                                                                                  \
             __cvector_set_size(dest, sz);                                                                              \
             memcpy((dest), (src), sz * sizeof(*(src)));                                                                \
         }                                                                                                              \
