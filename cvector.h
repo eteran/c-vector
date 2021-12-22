@@ -4,6 +4,7 @@
 
 #include <assert.h> /* for assert */
 #include <stdlib.h> /* for malloc/realloc/free */
+#include <string.h> /* for memcpy/memmove */
 
 /**
  * @brief cvector_vector_type - The vector type used in this library
