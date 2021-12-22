@@ -109,16 +109,14 @@
  */
 #define cvector_insert(vec, pos, val)                                                                                  \
     do {                                                                                                               \
-        size_t cv_cap = cvector_capacity(vec);                                                                         \
-        size_t cv_sz = cvector_size(vec);                                                                              \
-        if (cv_cap <= cvector_size(vec)) {                                                                             \
-            cvector_grow((vec), cv_cap ? (cv_cap << 1) : 1);                                                           \
+        if (cvector_capacity(vec) <= cvector_size(vec) + 1) {                                                          \
+            cvector_grow((vec), cvector_capacity(vec) ? (cvector_capacity(vec) << 1) : 1);                             \
         }                                                                                                              \
-        if (pos < cv_sz) {                                                                                             \
-            memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cv_sz + 1) - (pos)));                         \
+        if (pos < cvector_size(vec)) {                                                                                 \
+            memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cvector_size(vec) + 1) - (pos)));             \
         }                                                                                                              \
         (vec)[(pos)] = (val);                                                                                          \
-        cvector_set_size((vec), cv_sz + 1);                                                                            \
+        cvector_set_size((vec), cvector_size(vec) + 1);                                                                \
     } while (0)                                                                                                        \
 
 #else
@@ -148,16 +146,14 @@
  */
 #define cvector_insert(vec, pos, val)                                                                                  \
     do {                                                                                                               \
-        size_t cv_cap = cvector_capacity(vec);                                                                         \
-        size_t cv_sz = cvector_size(vec);                                                                              \
-        if (cv_cap <= cvector_size(vec)) {                                                                             \
-            cvector_grow((vec), cv_cap + 1);                                                                           \
+        if (cvector_capacity(vec) <= cvector_size(vec) + 1) {                                                          \
+            cvector_grow((vec), cvector_size(vec) + 1);                                                                \
         }                                                                                                              \
-        if (pos < cv_sz) {                                                                                             \
-            memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cv_sz + 1) - (pos)));                         \
+        if (pos < cvector_size(vec)) {                                                                                 \
+            memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cvector_size(vec) + 1) - (pos)));             \
         }                                                                                                              \
         (vec)[(pos)] = (val);                                                                                          \
-        cvector_set_size((vec), cv_sz + 1);                                                                            \
+        cvector_set_size((vec), cvector_size(vec) + 1);                                                                \
     } while (0)                                                                                                        \
 
 #endif /* CVECTOR_LOGARITHMIC_GROWTH */
@@ -181,10 +177,9 @@
 #define cvector_copy(from, to)                                                                                         \
     do {                                                                                                               \
         if ((from)) {                                                                                                  \
-            const size_t sz = cvector_size(from);                                                                      \
-            cvector_grow(to, sz);                                                                                      \
-            cvector_set_size(to, sz);                                                                                  \
-            memcpy((to), (from), sz * sizeof(*(from)));                                                                \
+            cvector_grow(to, cvector_size(from));                                                                      \
+            cvector_set_size(to, cvector_size(from));                                                                  \
+            memcpy((to), (from), cvector_size(from) * sizeof(*(from)));                                                \
         }                                                                                                              \
     } while (0)                                                                                                        \
 

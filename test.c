@@ -12,7 +12,8 @@
 
 int main() {
 	cvector_vector_type(int) v = NULL;
-
+    cvector_vector_type(int) a = NULL;
+    cvector_vector_type(int) b = NULL;
 	/* add some elements to the back */
 	cvector_push_back(v, 10);
 	cvector_push_back(v, 20);
@@ -62,6 +63,60 @@ int main() {
 
 	/* well, we don't have destructors, so let's clean things up */
 	cvector_free(v);
+
+    putchar('\n');
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 5);
+    cvector_push_back(a, 4);
+    cvector_pop_back(a); // delete 4
+    cvector_push_back(a, 5);
+    cvector_erase(a, 1); // delete 5
+    cvector_erase(a, 0);
+    cvector_insert(a, 0, 1);
+
+    printf("a capacity: %lu\n", cvector_capacity(a));
+    assert (cvector_capacity(a) == 4);
+    printf("a size    : %lu\n", cvector_size(a));
+    assert (cvector_size(a) == 2);
+
+    if (a) {
+        size_t i;
+        cvector_copy(a, b);
+        assert(cvector_size(a) == cvector_size(b));
+        for (i = 0; i < cvector_size(b); ++i) {
+            printf("a[%lu] = %d\n", i, a[i]);
+            assert(a[i] == b[i]);
+        }
+    }
+
+    cvector_free(a);
+
+    printf("After copy:\n");
+    printf("b capacity: %lu\n", cvector_capacity(b));
+    assert (cvector_capacity(b) == 2);
+    printf("b size    : %lu\n", cvector_size(b));
+    assert (cvector_size(b) == 2);
+    putchar('\n');
+
+    if (b) {
+        size_t i;
+        cvector_insert(b, 0, 0);
+        cvector_insert(b, 2, 4);
+        cvector_insert(b, 2, 2);
+        cvector_insert(b, 3, 3);
+        printf("b capacity: %lu\n", cvector_capacity(b));
+        assert (cvector_capacity(b) == 8);
+        printf("b size    : %lu\n", cvector_size(b));
+        assert(cvector_size(b) == 6);
+        // expected vector: [0, 1, 2, 3, 4, 5]
+        for (i = 0; i < cvector_size(b); ++i) {
+            printf("b[%lu] = %d\n", i, b[i]);
+            assert(b[i] == (int) i);
+        }
+    }
+
+    cvector_free(b);
 
 	return 0;
 }
