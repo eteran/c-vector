@@ -35,9 +35,9 @@ int main(int argc, char *argv[]) {
 	/* this is the variable that will store the array, you can have
 	 * a vector of any type! For example, you may write float *v = NULL,
 	 * and you'd have a vector of floats :-). NULL will have a size
-	 * and capacity of 0. additionally, vector_begin and vector_end will
+	 * and capacity of 0. Additionally, vector_begin and vector_end will
 	 * return NULL on a NULL vector. Alternatively, for clarity of writing
-	 * use can use the cvector_vector_type macro to define a vector of a
+	 * you can use the cvector_vector_type macro to define a vector of a
 	 * given type.
 	 */
 	cvector_vector_type(int) v = NULL;
@@ -49,8 +49,12 @@ int main(int argc, char *argv[]) {
 	cvector_push_back(v, 10);
 	cvector_push_back(v, 20);
 	cvector_push_back(v, 30);
+	cvector_push_back(v, 40);
 
-	/* and remove one too */
+	/* remove an element by specifying an array subscript */
+	cvector_erase(v, 2);
+
+	/* remove an element from the back */
 	cvector_pop_back(v);
 
 	/* print out some stats about the vector */
