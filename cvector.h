@@ -248,7 +248,7 @@
             (vec) = (void *) (&cv_p2[2]);                                                                              \
             cvector_set_capacity((vec), (count));                                                                      \
         } else {                                                                                                       \
-            size_t *cv_p = cvector_clib_calloc(1, cv_sz);                                                              \
+            size_t *cv_p = cvector_clib_malloc(cv_sz);                                                                 \
             assert(cv_p);                                                                                              \
             (vec) = (void *) (&cv_p[2]);                                                                               \
             cvector_set_capacity((vec), (count));                                                                      \
