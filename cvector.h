@@ -3,8 +3,31 @@
 #define CVECTOR_H_
 
 #include <assert.h> /* for assert */
-#include <stdlib.h> /* for malloc/realloc/free */
 #include <string.h> /* for memcpy/memmove */
+
+#ifndef CVECTOR_CUSTOM_MALLOC
+#include <stdlib.h> /* for malloc/realloc/free */
+
+/* cvector heap implemented using C library malloc() */
+
+/* in case C library malloc() needs extra protection,
+ * allow these defines to be overridden.
+ */
+#ifndef cvector_clib_free
+#define cvector_clib_free free
+#endif
+#ifndef cvector_clib_malloc
+#define cvector_clib_malloc malloc
+#endif
+#ifndef cvector_clib_calloc
+#define cvector_clib_calloc calloc
+#endif
+
+#ifndef cvector_clib_realloc
+#define cvector_clib_realloc realloc
+#endif
+
+#endif /* #ifndef CVECTOR_CUSTOM_MALLOC */
 
 /**
  * @brief cvector_vector_type - The vector type used in this library
@@ -61,7 +84,7 @@
     do {                                                                                                               \
         if ((vec)) {                                                                                                   \
             size_t *p1 = &((size_t *) (vec))[-2];                                                                      \
-            free(p1);                                                                                                  \
+            cvector_clib_free(p1);                                                                                     \
         }                                                                                                              \
     } while (0)                                                                                                        \
 
@@ -220,12 +243,12 @@
         const size_t cv_sz = (count) * sizeof(*(vec)) + (sizeof(size_t) * 2);                                          \
         if ((vec)) {                                                                                                   \
             size_t *cv_p1 = &((size_t *) (vec))[-2];                                                                   \
-            size_t *cv_p2 = realloc(cv_p1, (cv_sz));                                                                   \
+            size_t *cv_p2 = cvector_clib_realloc(cv_p1, (cv_sz));                                                      \
             assert(cv_p2);                                                                                             \
             (vec) = (void *) (&cv_p2[2]);                                                                              \
             cvector_set_capacity((vec), (count));                                                                      \
         } else {                                                                                                       \
-            size_t *cv_p = malloc(cv_sz);                                                                              \
+            size_t *cv_p = cvector_clib_malloc(cv_sz);                                                                 \
             assert(cv_p);                                                                                              \
             (vec) = (void *) (&cv_p[2]);                                                                               \
             cvector_set_capacity((vec), (count));                                                                      \
