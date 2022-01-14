@@ -59,6 +59,22 @@
   (cvector_size(vec) == 0)                                                                                             \
 
 /**
+ * @brief cvector_reserve - Requests that the vector capacity be at least enough to contain n elements.
+ * If n is greater than the current vector capacity, the function causes the container to reallocate its 
+ * storage increasing its capacity to n (or greater).
+ * @param vec - the vector
+ * @param n - Minimum capacity for the vector.
+ * @return void
+ */
+#define cvector_reserve(vec, capacity)                                                                                 \
+    do {                                                                                                               \
+        size_t cv_cap = cvector_capacity(vec);                                                                         \
+        if (cv_cap < (capacity)) {                                                                                     \
+            cvector_grow((vec), (capacity));                                                                           \
+        }                                                                                                              \
+    } while (0)                                                                                                        \
+
+/**
  * @brief cvector_erase - removes the element at index i from the vector
  * @param vec - the vector
  * @param i - index of element to remove
