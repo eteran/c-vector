@@ -29,6 +29,10 @@
 
 #endif /* #ifndef CVECTOR_CUSTOM_MALLOC */
 
+#ifndef UNUSED
+#define UNUSED(x) ((void) (x))
+#endif
+
 /**
  * @brief cvector_vector_type - The vector type used in this library
  */
@@ -73,7 +77,7 @@
                 memmove((vec) + (i), (vec) + (i) + 1, sizeof(*(vec)) * (cv_sz - 1 - (i)));                             \
             }                                                                                                          \
         }                                                                                                              \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_free - frees all memory associated with the vector
@@ -86,7 +90,7 @@
             size_t *p1 = &((size_t *) (vec))[-2];                                                                      \
             cvector_clib_free(p1);                                                                                     \
         }                                                                                                              \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_begin - returns an iterator to first element of the vector
@@ -121,7 +125,7 @@
         }                                                                                                              \
         vec[cvector_size(vec)] = (value);                                                                              \
         cvector_set_size((vec), cvector_size(vec) + 1);                                                                \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_insert - insert element at position pos to the vector
@@ -140,7 +144,7 @@
         }                                                                                                              \
         (vec)[(pos)] = (val);                                                                                          \
         cvector_set_size((vec), cvector_size(vec) + 1);                                                                \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 #else
 
@@ -158,7 +162,7 @@
         }                                                                                                              \
         vec[cvector_size(vec)] = (value);                                                                              \
         cvector_set_size((vec), cvector_size(vec) + 1);                                                                \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_insert - insert element at position pos to the vector
@@ -177,7 +181,7 @@
         }                                                                                                              \
         (vec)[(pos)] = (val);                                                                                          \
         cvector_set_size((vec), cvector_size(vec) + 1);                                                                \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 #endif /* CVECTOR_LOGARITHMIC_GROWTH */
 
@@ -189,7 +193,7 @@
 #define cvector_pop_back(vec)                                                                                          \
     do {                                                                                                               \
         cvector_set_size((vec), cvector_size(vec) - 1);                                                                \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_copy - copy a vector
@@ -204,7 +208,7 @@
             cvector_set_size(to, cvector_size(from));                                                                  \
             memcpy((to), (from), cvector_size(from) * sizeof(*(from)));                                                \
         }                                                                                                              \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_set_capacity - For internal use, sets the capacity variable of the vector
@@ -217,7 +221,7 @@
         if ((vec)) {                                                                                                   \
             ((size_t *) (vec))[-1] = (size);                                                                           \
         }                                                                                                              \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_set_size - For internal use, sets the size variable of the vector
@@ -230,7 +234,7 @@
         if ((vec)) {                                                                                                   \
             ((size_t *) (vec))[-2] = (size);                                                                           \
         }                                                                                                              \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 /**
  * @brief cvector_grow - For internal use, ensures that the vector is at least <count> elements big
@@ -254,6 +258,6 @@
             cvector_set_capacity((vec), (count));                                                                      \
             cvector_set_size((vec), 0);                                                                                \
         }                                                                                                              \
-    } while (0)                                                                                                        \
+    } while(UNUSED(0), 0)                                                                                              \
 
 #endif /* CVECTOR_H_ */
