@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
    * you can use the cvector_vector_type macro to define a vector of a
    * given type.
    */
-  cvector_vector_type(int)v = NULL;
+  cvector_vector_type(int) v = NULL;
 
   (void)argc;
   (void)argv;

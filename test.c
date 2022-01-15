@@ -11,9 +11,9 @@
 #include "cvector.h"
 
 int main() {
-  cvector_vector_type(int)v = NULL;
-  cvector_vector_type(int)a = NULL;
-  cvector_vector_type(int)b = NULL;
+  cvector_vector_type(int) v = NULL;
+  cvector_vector_type(int) a = NULL;
+  cvector_vector_type(int) b = NULL;
   /* add some elements to the back */
   cvector_push_back(v, 10);
   cvector_push_back(v, 20);
