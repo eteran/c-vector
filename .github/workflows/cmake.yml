@@ -42,4 +42,11 @@ jobs:
       run: |
         make check
         make memcheck
-      
+  clang-format-checking:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: RafikFarhad/clang-format-github-action@v1.0.1
+        with:
+          sources: "*.h,*.c"
+
