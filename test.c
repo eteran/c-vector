@@ -14,6 +14,7 @@ int main() {
   cvector_vector_type(int) v = NULL;
   cvector_vector_type(int) a = NULL;
   cvector_vector_type(int) b = NULL;
+  cvector_vector_type(int) c = NULL;
   /* add some elements to the back */
   cvector_push_back(v, 10);
   cvector_push_back(v, 20);
@@ -115,6 +116,27 @@ int main() {
   }
 
   cvector_free(b);
+
+  cvector_reserve(c, 100);
+  assert(cvector_capacity(c) == 100);
+  assert(cvector_size(c) == 0);
+  printf("c capacity: %lu\n", cvector_capacity(c));
+  printf("c size        : %lu\n", cvector_size(c));
+  cvector_push_back(c, 10);
+  assert(cvector_capacity(c) == 100);
+  assert(cvector_size(c) == 1);
+  cvector_reserve(c, 10);
+  assert(cvector_capacity(c) == 100);
+  printf("c capacity: %lu\n", cvector_capacity(c));
+  printf("c size        : %lu\n", cvector_size(c));
+
+  for (int i = 0; i < 100; ++i) {
+    cvector_push_back(c, i);
+  }
+  assert(cvector_capacity(c) == 200);
+  printf("c capacity: %lu\n", cvector_capacity(c));
+  printf("c size        : %lu\n", cvector_size(c));
+  cvector_free(c);
 
   return 0;
 }
