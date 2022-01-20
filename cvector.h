@@ -1,7 +1,18 @@
 #ifndef CVECTOR_H_
 #define CVECTOR_H_
 
+#ifndef CVECTOR_CUSTOM_ASSERT
 #include <assert.h> /* for assert */
+
+#ifndef cvector_assert
+#define cvector_assert assert
+#endif
+#else
+#ifndef cvector_assert
+#error "custom cvector_assert aquired but not defined"
+#endif
+#endif // CVECTOR_CUSTOM_ASSERT
+
 #include <string.h> /* for memcpy/memmove */
 
 #ifndef CVECTOR_CUSTOM_MALLOC
@@ -277,12 +288,12 @@
   if ((vec)) {                                                                 \
     size_t *cv_p1 = &((size_t *)(vec))[-2];                                    \
     size_t *cv_p2 = cvector_clib_realloc(cv_p1, (cv_sz));                      \
-    assert(cv_p2);                                                             \
+    cvector_assert(cv_p2);                                                     \
     (vec) = (void *)(&cv_p2[2]);                                               \
     cvector_set_capacity((vec), (count));                                      \
   } else {                                                                     \
     size_t *cv_p = cvector_clib_malloc(cv_sz);                                 \
-    assert(cv_p);                                                              \
+    cvector_assert(cv_p);                                                      \
     (vec) = (void *)(&cv_p[2]);                                                \
     cvector_set_capacity((vec), (count));                                      \
     cvector_set_size((vec), 0);                                                \
