@@ -3,8 +3,8 @@
 #define CVECTOR_H_
 
 #include <assert.h> /* for assert */
-#include <string.h> /* for memcpy/memmove */
 #include <stdlib.h> /* for malloc/realloc/free */
+#include <string.h> /* for memcpy/memmove */
 
 /* cvector heap implemented using C library malloc() */
 
@@ -23,7 +23,6 @@
 #ifndef cvector_clib_realloc
 #define cvector_clib_realloc realloc
 #endif
-
 
 /**
  * @brief cvector_vector_type - The vector type used in this library
