@@ -120,56 +120,41 @@
 #ifdef CVECTOR_LOGARITHMIC_GROWTH
 
 /**
- * @brief cvector_push_back - adds an element to the end of the vector
- * @param vec - the vector
- * @param value - the value to add
- * @return void
+ * @brief cvector_compute_next_grow - returns an the computed size in next vector grow
+ * size is increased by multiplication of 2
+ * @param size - current size
+ * @return size after next vector grow
  */
-#define cvector_push_back(vec, value)                        \
-    do {                                                     \
-        size_t cv_cap = cvector_capacity(vec);               \
-        if (cv_cap <= cvector_size(vec)) {                   \
-            cvector_grow((vec), cv_cap ? (cv_cap << 1) : 1); \
-        }                                                    \
-        vec[cvector_size(vec)] = (value);                    \
-        cvector_set_size((vec), cvector_size(vec) + 1);      \
-    } while (0)
-
-/**
- * @brief cvector_insert - insert element at position pos to the vector
- * @param vec - the vector
- * @param pos - position in the vector where the new elements are inserted.
- * @param val - value to be copied (or moved) to the inserted elements.
- * @return void
- */
-#define cvector_insert(vec, pos, val)                                                                      \
-    do {                                                                                                   \
-        if (cvector_capacity(vec) <= cvector_size(vec) + 1) {                                              \
-            cvector_grow((vec), cvector_capacity(vec) ? (cvector_capacity(vec) << 1) : 1);                 \
-        }                                                                                                  \
-        if (pos < cvector_size(vec)) {                                                                     \
-            memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cvector_size(vec) + 1) - (pos))); \
-        }                                                                                                  \
-        (vec)[(pos)] = (val);                                                                              \
-        cvector_set_size((vec), cvector_size(vec) + 1);                                                    \
-    } while (0)
+#define cvector_compute_next_grow(size) \
+    ((size) ? ((size) << 1) : 1)
 
 #else
 
 /**
+ * @brief cvector_compute_next_grow - returns an the computed size in next vector grow
+ * size is increased by 1
+ * @param size - current size
+ * @return size after next vector grow
+ */
+#define cvector_compute_next_grow(size) \
+    ((size) + 1)
+
+#endif /* CVECTOR_LOGARITHMIC_GROWTH */
+
+/**
  * @brief cvector_push_back - adds an element to the end of the vector
  * @param vec - the vector
  * @param value - the value to add
  * @return void
  */
-#define cvector_push_back(vec, value)                   \
-    do {                                                \
-        size_t cv_cap = cvector_capacity(vec);          \
-        if (cv_cap <= cvector_size(vec)) {              \
-            cvector_grow((vec), cv_cap + 1);            \
-        }                                               \
-        vec[cvector_size(vec)] = (value);               \
-        cvector_set_size((vec), cvector_size(vec) + 1); \
+#define cvector_push_back(vec, value)                               \
+    do {                                                            \
+        size_t cv_cap = cvector_capacity(vec);                      \
+        if (cv_cap <= cvector_size(vec)) {                          \
+            cvector_grow((vec), cvector_compute_next_grow(cv_cap)); \
+        }                                                           \
+        vec[cvector_size(vec)] = (value);                           \
+        cvector_set_size((vec), cvector_size(vec) + 1);             \
     } while (0)
 
 /**
@@ -182,7 +167,7 @@
 #define cvector_insert(vec, pos, val)                                                                      \
     do {                                                                                                   \
         if (cvector_capacity(vec) <= cvector_size(vec) + 1) {                                              \
-            cvector_grow((vec), cvector_size(vec) + 1);                                                    \
+            cvector_grow((vec), cvector_compute_next_grow(cvector_capacity((vec))));                       \
         }                                                                                                  \
         if (pos < cvector_size(vec)) {                                                                     \
             memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cvector_size(vec) + 1) - (pos))); \
@@ -190,8 +175,6 @@
         (vec)[(pos)] = (val);                                                                              \
         cvector_set_size((vec), cvector_size(vec) + 1);                                                    \
     } while (0)
-
-#endif /* CVECTOR_LOGARITHMIC_GROWTH */
 
 /**
  * @brief cvector_pop_back - removes the last element from the vector
