@@ -24,6 +24,9 @@ add_executable(${TEST_EXE}
 	test.c
 )
 
+set_target_properties(c-vector-example PROPERTIES C_STANDARD 99)
+set_target_properties(${TEST_EXE} PROPERTIES C_STANDARD 99)
+
 # 'make test' will not automatically rebuild the executable if the source
 # has been changed; 'make' or 'make clean && make' need to be run first;
 # but there is a workaround

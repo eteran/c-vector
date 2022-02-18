@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
 
     /* print out some stats about the vector */
     printf("pointer : %p\n", (void *)v);
-    printf("capacity: %lu\n", cvector_capacity(v));
-    printf("size    : %lu\n", cvector_size(v));
+    printf("capacity: %zu\n", cvector_capacity(v));
+    printf("size    : %zu\n", cvector_size(v));
 
     /* iterator over the vector using "iterator" style */
     if (v) {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     if (v) {
         size_t i;
         for (i = 0; i < cvector_size(v); ++i) {
-            printf("v[%lu] = %d\n", i, v[i]);
+            printf("v[%zu] = %d\n", i, v[i]);
         }
     }
 
