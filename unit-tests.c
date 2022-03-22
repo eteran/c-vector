@@ -1,8 +1,8 @@
 
 
 #define CVECTOR_LOGARITHMIC_GROWTH
-#include "utest/utest.h"
 #include "cvector.h"
+#include "utest/utest.h"
 
 UTEST(test, vector_empty) {
     cvector_vector_type(int) v = NULL;
