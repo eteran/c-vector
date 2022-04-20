@@ -10,6 +10,7 @@
 #define CVECTOR_LOGARITHMIC_GROWTH
 
 #include "cvector.h"
+#include "cvector_utils.h"
 
 int main() {
     cvector_vector_type(int) v = NULL;

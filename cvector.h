@@ -101,24 +101,6 @@
     } while (0)
 
 /**
- * @brief cvector_free_with_mechanic - frees all memory associated with the vector and call free_func function on each item
- * @param vec - the vector
- * @param free_func - function used to free each element in the vector with one parameter which is the type of the element)
- * @return void
- */
-#define cvector_free_and_free_elements(vec, free_func)             \
-    do {                                                           \
-        if ((vec)) {                                               \
-            if (free_func) {                                       \
-                for (size_t i = 0; i < cvector_size((vec)); i++) { \
-                    free_func((vec)[i]);                           \
-                }                                                  \
-            }                                                      \
-            cvector_free(vec);                                     \
-        }                                                          \
-    } while (0)
-
-/**
  * @brief cvector_begin - returns an iterator to first element of the vector
  * @param vec - the vector
  * @return a pointer to the first element (or NULL)
