@@ -9,7 +9,7 @@
  */
 #define cvector_for_each(vec, func)                          \
     do {                                                     \
-        if ((vec) && (func)) {                               \
+        if ((vec) && (func) != NULL) {                       \
             for (size_t i = 0; i < cvector_size(vec); i++) { \
                 func((vec)[i]);                              \
             }                                                \

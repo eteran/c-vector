@@ -7,6 +7,7 @@ add_library(${CMAKE_PROJECT_NAME} INTERFACE)
 
 target_sources(c-vector INTERFACE
 	${CMAKE_CURRENT_SOURCE_DIR}/cvector.h
+	${CMAKE_CURRENT_SOURCE_DIR}/cvector_utils.h
 )
 
 # ------------------------------

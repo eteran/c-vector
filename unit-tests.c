@@ -2,7 +2,9 @@
 
 #define CVECTOR_LOGARITHMIC_GROWTH
 #include "cvector.h"
+#include "cvector_utils.h"
 #include "utest/utest.h"
+#include <stdlib.h>
 
 UTEST(test, vector_empty) {
     cvector_vector_type(int) v = NULL;
@@ -160,6 +162,20 @@ UTEST(test, vector_reserve) {
 
     ASSERT_TRUE(cvector_capacity(c) == 200);
     cvector_free(c);
+}
+
+UTEST(test, vector_free_all) {
+    cvector_vector_type(char *) v = NULL;
+    for (int i = 0; i < 10; ++i) {
+        char *p = malloc(6);
+        strcpy(p, "hello");
+        cvector_push_back(v, p);
+    }
+
+    ASSERT_TRUE(cvector_size(v) == 10);
+    ASSERT_TRUE(cvector_capacity(v) >= 10);
+
+    cvector_free_each_and_free(v, free);
 }
 
 UTEST_MAIN();
