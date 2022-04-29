@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.7.0)
 project(c-vector VERSION 0.1.0)
 enable_testing()
 
@@ -28,21 +28,23 @@ target_compile_options(c-vector-example PUBLIC -Wall -Wextra)
 # ----------------------------
 
 # ------ test executable used for memory checks ------
-set(TEST_EXE "test-c-vector")
-
-add_executable(${TEST_EXE}
+add_executable(test-c-vector
 	EXCLUDE_FROM_ALL
-	test.c
+	${CMAKE_CURRENT_SOURCE_DIR}/test.c
 )
 
-# 'make test' will not automatically rebuild the executable if the source
-# has been changed; 'make' or 'make clean && make' need to be run first;
-# but there is a workaround
-# https://stackoverflow.com/questions/733475/cmake-ctest-make-test-doesnt-build-tests
-# https://gitlab.kitware.com/cmake/community/-/wikis/doc/tutorials/EmulateMakeCheck
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
-add_test(NAME test COMMAND $<TARGET_FILE:${TEST_EXE}>)
-add_dependencies(check ${TEST_EXE})
+add_test(NAME test-c-vector COMMAND test-c-vector)
+set_target_properties(test-c-vector PROPERTIES C_STANDARD 99)
+target_compile_options(test-c-vector PUBLIC -Wall -Wextra)
+
+add_test(test_build
+  "${CMAKE_COMMAND}"
+  --build "${CMAKE_BINARY_DIR}"
+  --config "$<CONFIG>"
+  --target test-c-vector
+)
+set_tests_properties(test_build PROPERTIES FIXTURES_SETUP    test_fixture)
+set_tests_properties(test-c-vector PROPERTIES FIXTURES_REQUIRED test_fixture)
 
 find_program(VALGRIND "valgrind")
 if(VALGRIND)
@@ -52,24 +54,30 @@ if(VALGRIND)
 		--leak-check=full
 		--show-reachable=yes
 		--error-exitcode=1
-		$<TARGET_FILE:${TEST_EXE}>
+		$<TARGET_FILE:test-c-vector>
 	)
 endif()
-
-set_target_properties(${TEST_EXE} PROPERTIES C_STANDARD 99)
-target_compile_options(${TEST_EXE} PUBLIC -Wall -Wextra)
 
 # ----------------------------------------------------
 
 # ------ unit tests ------
 
-set(UNIT_TEST_EXE "unit-tests")
-set(UNIT_TEST_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/unit-tests.c)
-add_executable(${UNIT_TEST_EXE} ${UNIT_TEST_SOURCES})
+add_executable(unit-tests
+	EXCLUDE_FROM_ALL
+	${CMAKE_CURRENT_SOURCE_DIR}/unit-tests.c
+)
 
-add_test(NAME ${UNIT_TEST_EXE} COMMAND $<TARGET_FILE:${UNIT_TEST_EXE}>)
+add_test(NAME unit-tests COMMAND $<TARGET_FILE:unit-tests>)
+set_target_properties(unit-tests PROPERTIES C_STANDARD 99)
+target_compile_options(unit-tests PUBLIC -Wall -Wextra)
 
-set_target_properties(${UNIT_TEST_EXE} PROPERTIES C_STANDARD 99)
-target_compile_options(${UNIT_TEST_EXE} PUBLIC -Wall -Wextra)
+add_test(unit_test_build
+  "${CMAKE_COMMAND}"
+  --build "${CMAKE_BINARY_DIR}"
+  --config "$<CONFIG>"
+  --target unit-tests
+)
+set_tests_properties(unit_test_build PROPERTIES FIXTURES_SETUP test_fixture)
+set_tests_properties(unit-tests PROPERTIES FIXTURES_REQUIRED test_fixture)
 
 # ------------------------
