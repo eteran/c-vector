@@ -153,6 +153,6 @@ int main() {
         }
     }
 
-    cvector_free_and_free_elements(str_vect, free);
+    cvector_free_each_and_free(str_vect, free);
     return 0;
 }
