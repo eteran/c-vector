@@ -5,16 +5,19 @@
 #endif
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define CVECTOR_LOGARITHMIC_GROWTH
 
 #include "cvector.h"
+#include "cvector_utils.h"
 
 int main() {
     cvector_vector_type(int) v = NULL;
     cvector_vector_type(int) a = NULL;
     cvector_vector_type(int) b = NULL;
     cvector_vector_type(int) c = NULL;
+    cvector_vector_type(char*) str_vect = NULL;
 
     /* add some elements to the back */
     cvector_push_back(v, 10);
@@ -138,5 +141,19 @@ int main() {
     printf("c capacity: %zu\n", cvector_capacity(c));
     printf("c size        : %zu\n", cvector_size(c));
     cvector_free(c);
+
+
+    cvector_push_back(str_vect, strdup("Hello world"));
+    cvector_push_back(str_vect, strdup("Good  bye world"));
+    cvector_push_back(str_vect, strdup("not today"));
+
+    if (str_vect) {
+        size_t i;
+        for (i = 0; i < cvector_size(str_vect); ++i) {
+            printf("v[%zu] = %s\n", i, str_vect[i]);
+        }
+    }
+
+    cvector_free_and_free_elements(str_vect,free);
     return 0;
 }
