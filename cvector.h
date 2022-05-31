@@ -64,8 +64,8 @@
  */
 #define cvector_reserve(vec, capacity)           \
     do {                                         \
-        size_t __cv_cap = cvector_capacity(vec); \
-        if (__cv_cap < (capacity)) {             \
+        size_t cv_cap__ = cvector_capacity(vec); \
+        if (cv_cap__ < (capacity)) {             \
             cvector_grow((vec), (capacity));     \
         }                                        \
     } while (0)
@@ -79,10 +79,10 @@
 #define cvector_erase(vec, i)                                                                \
     do {                                                                                     \
         if ((vec)) {                                                                         \
-            const size_t __cv_sz = cvector_size(vec);                                        \
-            if ((i) < __cv_sz) {                                                             \
-                cvector_set_size((vec), __cv_sz - 1);                                        \
-                memmove((vec) + (i), (vec) + (i) + 1, sizeof(*(vec)) * (__cv_sz - 1 - (i))); \
+            const size_t cv_sz__ = cvector_size(vec);                                        \
+            if ((i) < cv_sz__) {                                                             \
+                cvector_set_size((vec), cv_sz__ - 1);                                        \
+                memmove((vec) + (i), (vec) + (i) + 1, sizeof(*(vec)) * (cv_sz__ - 1 - (i))); \
             }                                                                                \
         }                                                                                    \
     } while (0)
@@ -149,9 +149,9 @@
  */
 #define cvector_push_back(vec, value)                                 \
     do {                                                              \
-        size_t __cv_cap = cvector_capacity(vec);                      \
-        if (__cv_cap <= cvector_size(vec)) {                          \
-            cvector_grow((vec), cvector_compute_next_grow(__cv_cap)); \
+        size_t cv_cap__ = cvector_capacity(vec);                      \
+        if (cv_cap__ <= cvector_size(vec)) {                          \
+            cvector_grow((vec), cvector_compute_next_grow(cv_cap__)); \
         }                                                             \
         (vec)[cvector_size(vec)] = (value);                           \
         cvector_set_size((vec), cvector_size(vec) + 1);               \
@@ -235,17 +235,17 @@
  */
 #define cvector_grow(vec, count)                                                \
     do {                                                                        \
-        const size_t __cv_sz = (count) * sizeof(*(vec)) + (sizeof(size_t) * 2); \
+        const size_t cv_sz__ = (count) * sizeof(*(vec)) + (sizeof(size_t) * 2); \
         if ((vec)) {                                                            \
-            size_t *__cv_p1 = &((size_t *)(vec))[-2];                           \
-            size_t *__cv_p2 = cvector_clib_realloc(__cv_p1, (__cv_sz));         \
-            assert(__cv_p2);                                                    \
-            (vec) = (void *)(&__cv_p2[2]);                                      \
+            size_t *cv_p1__ = &((size_t *)(vec))[-2];                           \
+            size_t *cv_p2__ = cvector_clib_realloc(cv_p1__, (cv_sz__));         \
+            assert(cv_p2__);                                                    \
+            (vec) = (void *)(&cv_p2__[2]);                                      \
             cvector_set_capacity((vec), (count));                               \
         } else {                                                                \
-            size_t *__cv_p = cvector_clib_malloc(__cv_sz);                      \
-            assert(__cv_p);                                                     \
-            (vec) = (void *)(&__cv_p[2]);                                       \
+            size_t *cv_p__ = cvector_clib_malloc(cv_sz__);                      \
+            assert(cv_p__);                                                     \
+            (vec) = (void *)(&cv_p__[2]);                                       \
             cvector_set_capacity((vec), (count));                               \
             cvector_set_size((vec), 0);                                         \
         }                                                                       \
