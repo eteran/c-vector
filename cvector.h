@@ -153,7 +153,7 @@
         if (__cv_cap <= cvector_size(vec)) {                          \
             cvector_grow((vec), cvector_compute_next_grow(__cv_cap)); \
         }                                                             \
-        vec[cvector_size(vec)] = (value);                             \
+        (vec)[cvector_size(vec)] = (value);                           \
         cvector_set_size((vec), cvector_size(vec) + 1);               \
     } while (0)
 
@@ -169,7 +169,7 @@
         if (cvector_capacity(vec) <= cvector_size(vec) + 1) {                                              \
             cvector_grow((vec), cvector_compute_next_grow(cvector_capacity((vec))));                       \
         }                                                                                                  \
-        if (pos < cvector_size(vec)) {                                                                     \
+        if ((pos) < cvector_size(vec)) {                                                                   \
             memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cvector_size(vec) + 1) - (pos))); \
         }                                                                                                  \
         (vec)[(pos)] = (val);                                                                              \
