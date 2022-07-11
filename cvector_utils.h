@@ -2,6 +2,15 @@
 #define CVECTOR_UTILS_H_
 
 /**
+ * @brief cvector_for_each_in - for header to iterate over vector each element's address
+ * @param it - iterator of type pointer to vector element
+ * @param vec - the vector
+ * @return void
+ */
+#define cvector_for_each_in(it, vec) \
+    for (it = cvector_begin(vec); it < cvector_end(vec); it++)
+
+/**
  * @brief cvector_for_each - call function func on each element of the vector
  * @param vec - the vector
  * @param func - function to be called on each element that takes each element as argument
