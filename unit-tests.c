@@ -180,4 +180,24 @@ UTEST(test, vector_free_all) {
     cvector_free_each_and_free(v, free);
 }
 
+UTEST(test, vector_for_each_int) {
+    char **it;
+    int i;
+    cvector_vector_type(char *) v = NULL;
+    for (i = 0; i < 10; ++i) {
+        char *p = malloc(6);
+        strcpy(p, "hello");
+        cvector_push_back(v, p);
+    }
+
+    ASSERT_TRUE(cvector_size(v) == 10);
+    ASSERT_TRUE(cvector_capacity(v) >= 10);
+
+    cvector_for_each_in(it, v) {
+        ASSERT_TRUE(strcmp(*it, "hello") == 0);
+    }
+
+    cvector_free_each_and_free(v, free);
+}
+
 UTEST_MAIN();
