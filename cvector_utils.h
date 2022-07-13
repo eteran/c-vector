@@ -7,13 +7,14 @@
  * @param func - function to be called on each element that takes each element as argument
  * @return void
  */
-#define cvector_for_each(vec, func)                          \
-    do {                                                     \
-        if ((vec) && (func) != NULL) {                       \
-            for (size_t i = 0; i < cvector_size(vec); i++) { \
-                func((vec)[i]);                              \
-            }                                                \
-        }                                                    \
+#define cvector_for_each(vec, func)                   \
+    do {                                              \
+        if ((vec) && (func) != NULL) {                \
+            size_t i;                                 \
+            for (i = 0; i < cvector_size(vec); i++) { \
+                func((vec)[i]);                       \
+            }                                         \
+        }                                             \
     } while (0)
 
 /**
