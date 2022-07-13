@@ -22,7 +22,7 @@ PUBLIC
 	${CMAKE_PROJECT_NAME}
 )
 
-set_target_properties(c-vector-example PROPERTIES C_STANDARD 99)
+set_target_properties(c-vector-example PROPERTIES C_STANDARD 90)
 target_compile_options(c-vector-example PUBLIC -Wall -Wextra)
 
 # ----------------------------
@@ -34,7 +34,7 @@ add_executable(test-c-vector
 )
 
 add_test(NAME test-c-vector COMMAND test-c-vector)
-set_target_properties(test-c-vector PROPERTIES C_STANDARD 99)
+set_target_properties(test-c-vector PROPERTIES C_STANDARD 90)
 target_compile_options(test-c-vector PUBLIC -Wall -Wextra)
 
 add_test(test_build
@@ -68,7 +68,7 @@ add_executable(unit-tests
 )
 
 add_test(NAME unit-tests COMMAND $<TARGET_FILE:unit-tests>)
-set_target_properties(unit-tests PROPERTIES C_STANDARD 99)
+set_target_properties(unit-tests PROPERTIES C_STANDARD 90)
 target_compile_options(unit-tests PUBLIC -Wall -Wextra)
 
 add_test(unit_test_build

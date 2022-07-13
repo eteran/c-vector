@@ -134,8 +134,11 @@ int main() {
     printf("c capacity: %zu\n", cvector_capacity(c));
     printf("c size        : %zu\n", cvector_size(c));
 
-    for (int i = 0; i < 100; ++i) {
-        cvector_push_back(c, i);
+    {
+        int i;
+        for (i = 0; i < 100; ++i) {
+            cvector_push_back(c, i);
+        }
     }
     assert(cvector_capacity(c) == 200);
     printf("c capacity: %zu\n", cvector_capacity(c));

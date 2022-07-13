@@ -143,6 +143,7 @@ UTEST(test, vector_copy) {
 }
 
 UTEST(test, vector_reserve) {
+    int i;
     cvector_vector_type(int) c = NULL;
 
     cvector_reserve(c, 100);
@@ -156,7 +157,7 @@ UTEST(test, vector_reserve) {
     cvector_reserve(c, 10);
     ASSERT_TRUE(cvector_capacity(c) == 100);
 
-    for (int i = 0; i < 100; ++i) {
+    for (i = 0; i < 100; ++i) {
         cvector_push_back(c, i);
     }
 
@@ -165,8 +166,9 @@ UTEST(test, vector_reserve) {
 }
 
 UTEST(test, vector_free_all) {
+    int i;
     cvector_vector_type(char *) v = NULL;
-    for (int i = 0; i < 10; ++i) {
+    for (i = 0; i < 10; ++i) {
         char *p = malloc(6);
         strcpy(p, "hello");
         cvector_push_back(v, p);
