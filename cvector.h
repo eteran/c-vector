@@ -24,6 +24,15 @@
 #define cvector_clib_realloc realloc
 #endif
 
+#ifndef ALIGN_UP_TYPE
+// TODO documentation
+/**
+ * align the value to the size of type upwards. If already aligned, does nothing
+ */
+#define ALIGN_UP_TYPE(value, type) \
+    ((value) + ((sizeof(type) - 1) & ((sizeof(type) - 1) - ((sizeof(type) - 1) & (value)) + 1)))
+#endif /* ALIGN_UP_TYPE */
+
 typedef void (*cvector_elem_destructor_t)(void *elem);
 
 /**
@@ -37,7 +46,7 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @return the capacity as a size_t
  */
 #define cvector_capacity(vec) \
-    ((vec) ? ((size_t *)(vec))[-1] : (size_t)0)
+    ((vec) ? cvector_capacity_lval(vec) : (size_t)0)
 
 /**
  * @brief cvector_size - gets the current size of the vector
@@ -45,7 +54,10 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @return the size as a size_t
  */
 #define cvector_size(vec) \
-    ((vec) ? ((size_t *)(vec))[-2] : (size_t)0)
+    ((vec) ? cvector_size_lval(vec) : (size_t)0)
+
+#define cvector_elem_destructor(vec) \
+    ((vec) ? cvector_elem_destructor_lval(vec) : (cvector_elem_destructor_t)NULL)
 
 /**
  * @brief cvector_set_elem_destructor - set the element destructor function
@@ -54,22 +66,13 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @return elem_destructor_fn - function pointer of type cvector_elem_destructor_t
  * @return the function pointer elem_destructor_fn or NULL on error
  */
-#define cvector_set_elem_destructor(vec, elem_destructor_fn)                                \
-    do {                                                                                    \
-        if (!(vec)) {                                                                       \
-            cvector_grow((vec), 0);                                                         \
-        }                                                                                   \
-        ((cvector_elem_destructor_t *)&(((size_t *)(vec))[-2]))[-1] = (elem_destructor_fn); \
+#define cvector_set_elem_destructor(vec, elem_destructor_fn)      \
+    do {                                                          \
+        if (!(vec)) {                                             \
+            cvector_grow((vec), 0);                               \
+        }                                                         \
+        cvector_elem_destructor_lval(vec) = (elem_destructor_fn); \
     } while (0)
-
-/**
- * @brief cvector_elem_destructor - get the element destructor function used
- * to clean up elements
- * @param vec - the vector
- * @return the function pointer as cvector_elem_destructor_t
- */
-#define cvector_elem_destructor(vec) \
-    ((vec) ? (((cvector_elem_destructor_t *)&(((size_t *)(vec))[-2]))[-1]) : NULL)
 
 /**
  * @brief cvector_empty - returns non-zero if the vector is empty
@@ -227,13 +230,14 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @param to - destination to which the function copy to
  * @return void
  */
-#define cvector_copy(from, to)                                          \
-    do {                                                                \
-        if ((from)) {                                                   \
-            cvector_grow(to, cvector_size(from));                       \
-            cvector_set_size(to, cvector_size(from));                   \
-            memcpy((to), (from), cvector_size(from) * sizeof(*(from))); \
-        }                                                               \
+#define cvector_copy(from, to)                                              \
+    do {                                                                    \
+        if ((from)) {                                                       \
+            cvector_grow(to, cvector_size(from));                           \
+            cvector_set_size(to, cvector_size(from));                       \
+            cvector_set_elem_destructor(to, cvector_elem_destructor(from)); \
+            memcpy((to), (from), cvector_size(from) * sizeof(*(from)));     \
+        }                                                                   \
     } while (0)
 
 /**
@@ -242,11 +246,11 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @param size - the new capacity to set
  * @return void
  */
-#define cvector_set_capacity(vec, size)     \
-    do {                                    \
-        if ((vec)) {                        \
-            ((size_t *)(vec))[-1] = (size); \
-        }                                   \
+#define cvector_set_capacity(vec, size)          \
+    do {                                         \
+        if ((vec)) {                             \
+            cvector_capacity_lval(vec) = (size); \
+        }                                        \
     } while (0)
 
 /**
@@ -255,12 +259,44 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @param size - the new capacity to set
  * @return void
  */
-#define cvector_set_size(vec, size)         \
-    do {                                    \
-        if ((vec)) {                        \
-            ((size_t *)(vec))[-2] = (size); \
-        }                                   \
+#define cvector_set_size(vec, size)          \
+    do {                                     \
+        if ((vec)) {                         \
+            cvector_size_lval(vec) = (size); \
+        }                                    \
     } while (0)
+
+// TODO
+#define cvector_elem_destructor_offset \
+    ((size_t)0)
+
+// TODO
+#define cvector_size_offset \
+    ((ALIGN_UP_TYPE(sizeof(cvector_elem_destructor_t), size_t)))
+
+// TODO
+#define cvector_capacity_offset \
+    (cvector_size_offset + sizeof(size_t))
+
+// TODO
+#define cvector_data_offset(vec) \
+    (ALIGN_UP_TYPE(cvector_capacity_offset + sizeof(size_t), sizeof(*vec)))
+
+//TODO
+#define cvector_elem_destructor_lval(vec) \
+    ((cvector_elem_destructor_t *)(((char *)(vec)) - cvector_data_offset(vec)))[0]
+
+// TODO
+#define cvector_size_lval(vec) \
+    ((size_t *)(((char *)(vec)) + cvector_size_offset - cvector_data_offset(vec)))[0]
+
+// TODO
+#define cvector_capacity_lval(vec) \
+    ((size_t *)(((char *)(vec)) + cvector_capacity_offset - cvector_data_offset(vec)))[0]
+
+// TODO
+#define cvector_vec_lval(vec) \
+    (vec)
 
 /**
  * @brief cvector_grow - For internal use, ensures that the vector is at least <count> elements big
@@ -268,22 +304,22 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @param count - the new capacity to set
  * @return void
  */
-#define cvector_grow(vec, count)                                                                                  \
-    do {                                                                                                          \
-        const size_t cv_sz__ = (count) * sizeof(*(vec)) + sizeof(size_t) * 2 + sizeof(cvector_elem_destructor_t); \
-        if ((vec)) {                                                                                              \
-            cvector_elem_destructor_t *cv_p1__ = &((cvector_elem_destructor_t *)&((size_t *)(vec))[-2])[-1];      \
-            cvector_elem_destructor_t *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                          \
-            assert(cv_p2__);                                                                                      \
-            (vec) = (void *)&((size_t *)&cv_p2__[1])[2];                                                          \
-        } else {                                                                                                  \
-            cvector_elem_destructor_t *cv_p__ = cvector_clib_malloc(cv_sz__);                                     \
-            assert(cv_p__);                                                                                       \
-            (vec) = (void *)&((size_t *)&cv_p__[1])[2];                                                           \
-            cvector_set_size((vec), 0);                                                                           \
-            ((cvector_elem_destructor_t *)&(((size_t *)(vec))[-2]))[-1] = NULL;                                   \
-        }                                                                                                         \
-        cvector_set_capacity((vec), (count));                                                                     \
+#define cvector_grow(vec, count)                                            \
+    do {                                                                    \
+        size_t cv_sz__ = cvector_data_offset(vec) + sizeof(*vec) * (count); \
+        if ((vec)) {                                                        \
+            char *cv_p1__ = ((char *)vec) - cvector_data_offset(vec);       \
+            char *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);         \
+            assert(cv_p2__);                                                \
+            (vec) = (void *)((cv_p2__) + cvector_data_offset(cv_p2__));     \
+        } else {                                                            \
+            char *cv_p__ = cvector_clib_malloc(cv_sz__);                    \
+            assert(cv_p__);                                                 \
+            (vec) = (void *)((cv_p__) + cvector_data_offset(cv_p__));       \
+            cvector_set_size((vec), 0);                                     \
+            cvector_elem_destructor_lval(vec) = (NULL);                     \
+        }                                                                   \
+        cvector_set_capacity((vec), (count));                               \
     } while (0)
 
 #endif /* CVECTOR_H_ */
