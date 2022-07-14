@@ -9,16 +9,16 @@ It works by using the same trick as many allocators, which is to slightly
 allocate more data than requested, and using that extra padding in the front
 as storage for meta-data. Thus any non-null vector looks like this in memory:
 
-	+------+----------+---------+
-	| size | capacity | data... |
-	+------+----------+---------+
-	                  ^
-	                  | user's pointer
+	+-----------------+------+----------+---------+
+	| elem_destructor | size | capacity | data... |
+	+-----------------+------+----------+---------+
+	                                    ^
+	                                    | user's pointer
 
 Where the user is given a pointer to first element of `data`. This way the
 code has trivial access to the necessary meta-data, but the user need not be
-concerned with these details. The total overhead is `2 * sizeof(size_t)` per
-vector.
+concerned with these details. The total overhead is
+`2 * sizeof(size_t) + sizeof(void (*)(void *))` per vector.
 
 To allow the code to be maximally generic, it is implemented as all macros, and
 is thus header only. Usage is simple:
