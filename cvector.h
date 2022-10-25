@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2015 Evan Teran
+ *
+ * License: The MIT License (MIT)
+ */
 
 #ifndef CVECTOR_H_
 #define CVECTOR_H_
