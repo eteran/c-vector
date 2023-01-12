@@ -107,15 +107,19 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @param i - index of element to remove
  * @return void
  */
-#define cvector_erase(vec, i)                                                                \
-    do {                                                                                     \
-        if ((vec)) {                                                                         \
-            const size_t cv_sz__ = cvector_size(vec);                                        \
-            if ((i) < cv_sz__) {                                                             \
-                cvector_set_size((vec), cv_sz__ - 1);                                        \
-                memmove((vec) + (i), (vec) + (i) + 1, sizeof(*(vec)) * (cv_sz__ - 1 - (i))); \
-            }                                                                                \
-        }                                                                                    \
+#define cvector_erase(vec, i)                                                                 \
+    do {                                                                                      \
+        if ((vec)) {                                                                          \
+            const size_t cv_sz__ = cvector_size(vec);                                         \
+            if ((i) < cv_sz__) {                                                              \
+                cvector_elem_destructor_t elem_destructor__ = cvector_elem_destructor((vec)); \
+                if (elem_destructor__) {                                                      \
+                    elem_destructor__(&vec[i]);                                               \
+                }                                                                             \
+                cvector_set_size((vec), cv_sz__ - 1);                                         \
+                memmove((vec) + (i), (vec) + (i) + 1, sizeof(*(vec)) * (cv_sz__ - 1 - (i)));  \
+            }                                                                                 \
+        }                                                                                     \
     } while (0)
 
 /**
