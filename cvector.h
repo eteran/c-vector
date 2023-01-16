@@ -53,21 +53,6 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
     ((vec) ? ((size_t *)(vec))[-2] : (size_t)0)
 
 /**
- * @brief cvector_set_elem_destructor - set the element destructor function
- * used to clean up removed elements
- * @param vec - the vector
- * @return elem_destructor_fn - function pointer of type cvector_elem_destructor_t
- * @return the function pointer elem_destructor_fn or NULL on error
- */
-#define cvector_set_elem_destructor(vec, elem_destructor_fn)                                \
-    do {                                                                                    \
-        if (!(vec)) {                                                                       \
-            cvector_grow((vec), 0);                                                         \
-        }                                                                                   \
-        ((cvector_elem_destructor_t *)&(((size_t *)(vec))[-2]))[-1] = (elem_destructor_fn); \
-    } while (0)
-
-/**
  * @brief cvector_elem_destructor - get the element destructor function used
  * to clean up elements
  * @param vec - the vector
@@ -276,6 +261,20 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
         if ((vec)) {                        \
             ((size_t *)(vec))[-2] = (size); \
         }                                   \
+    } while (0)
+
+/**
+ * @brief cvector_set_elem_destructor - set the element destructor function
+ * used to clean up removed elements
+ * @param vec - the vector
+ * @param elem_destructor_fn - function pointer of type cvector_elem_destructor_t used to destroy elements
+ * @return void
+ */
+#define cvector_set_elem_destructor(vec, elem_destructor_fn)                                    \
+    do {                                                                                        \
+        if ((vec)) {                                                                            \
+            ((cvector_elem_destructor_t *)&(((size_t *)(vec))[-2]))[-1] = (elem_destructor_fn); \
+        }                                                                                       \
     } while (0)
 
 /**
