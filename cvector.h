@@ -110,7 +110,7 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  */
 #define cvector_erase(vec, i)                                                               \
     do {                                                                                    \
-        if ((vec)) {                                                                        \
+        if (vec) {                                                                          \
             const size_t cv_sz__ = cvector_size(vec);                                       \
             if ((i) < cv_sz__) {                                                            \
                 cvector_elem_destructor_t elem_destructor__ = cvector_elem_destructor(vec); \
@@ -133,7 +133,7 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  */
 #define cvector_free(vec)                                                               \
     do {                                                                                \
-        if ((vec)) {                                                                    \
+        if (vec) {                                                                      \
             void *p1__                                  = cvector_vec_to_base(vec);     \
             cvector_elem_destructor_t elem_destructor__ = cvector_elem_destructor(vec); \
             if (elem_destructor__) {                                                    \
@@ -263,7 +263,7 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  */
 #define cvector_set_capacity(vec, size)     \
     do {                                    \
-        if ((vec)) {                        \
+        if (vec) {                          \
             ((size_t *)(vec))[-1] = (size); \
         }                                   \
     } while (0)
@@ -276,7 +276,7 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  */
 #define cvector_set_size(vec, size)         \
     do {                                    \
-        if ((vec)) {                        \
+        if (vec) {                          \
             ((size_t *)(vec))[-2] = (size); \
         }                                   \
     } while (0)
@@ -290,7 +290,7 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  */
 #define cvector_set_elem_destructor(vec, elem_destructor_fn)                                    \
     do {                                                                                        \
-        if ((vec)) {                                                                            \
+        if (vec) {                                                                              \
             ((cvector_elem_destructor_t *)&(((size_t *)(vec))[-2]))[-1] = (elem_destructor_fn); \
         }                                                                                       \
     } while (0)
@@ -304,7 +304,7 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
 #define cvector_grow(vec, count)                                                                                  \
     do {                                                                                                          \
         const size_t cv_sz__ = (count) * sizeof(*(vec)) + sizeof(size_t) * 2 + sizeof(cvector_elem_destructor_t); \
-        if ((vec)) {                                                                                              \
+        if (vec) {                                                                                                \
             void *cv_p1__ = cvector_vec_to_base(vec);                                                             \
             void *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                                               \
             assert(cv_p2__);                                                                                      \
