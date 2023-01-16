@@ -117,7 +117,10 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
                     elem_destructor__(&vec[i]);                                               \
                 }                                                                             \
                 cvector_set_size((vec), cv_sz__ - 1);                                         \
-                memmove((vec) + (i), (vec) + (i) + 1, sizeof(*(vec)) * (cv_sz__ - 1 - (i)));  \
+                memmove(                                                                      \
+                    (vec) + (i),                                                              \
+                    (vec) + (i) + 1,                                                          \
+                    sizeof(*(vec)) * (cv_sz__ - 1 - (i)));                                    \
             }                                                                                 \
         }                                                                                     \
     } while (0)
@@ -205,16 +208,20 @@ typedef void (*cvector_elem_destructor_t)(void *elem);
  * @param val - value to be copied (or moved) to the inserted elements.
  * @return void
  */
-#define cvector_insert(vec, pos, val)                                                                      \
-    do {                                                                                                   \
-        if (cvector_capacity(vec) <= cvector_size(vec) + 1) {                                              \
-            cvector_grow((vec), cvector_compute_next_grow(cvector_capacity((vec))));                       \
-        }                                                                                                  \
-        if ((pos) < cvector_size(vec)) {                                                                   \
-            memmove((vec) + (pos) + 1, (vec) + (pos), sizeof(*(vec)) * ((cvector_size(vec) + 1) - (pos))); \
-        }                                                                                                  \
-        (vec)[(pos)] = (val);                                                                              \
-        cvector_set_size((vec), cvector_size(vec) + 1);                                                    \
+#define cvector_insert(vec, pos, val)                                 \
+    do {                                                              \
+        size_t cv_cap__ = cvector_capacity(vec);                      \
+        if (cv_cap__ <= cvector_size(vec)) {                          \
+            cvector_grow((vec), cvector_compute_next_grow(cv_cap__)); \
+        }                                                             \
+        if ((pos) < cvector_size(vec)) {                              \
+            memmove(                                                  \
+                (vec) + (pos) + 1,                                    \
+                (vec) + (pos),                                        \
+                sizeof(*(vec)) * ((cvector_size(vec)) - (pos)));      \
+        }                                                             \
+        (vec)[(pos)] = (val);                                         \
+        cvector_set_size((vec), cvector_size(vec) + 1);               \
     } while (0)
 
 /**

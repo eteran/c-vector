@@ -4,6 +4,7 @@
 #include "cvector.h"
 #include "cvector_utils.h"
 #include "utest/utest.h"
+#include <stdarg.h>
 #include <stdlib.h>
 
 UTEST(test, vector_empty) {
@@ -198,6 +199,42 @@ UTEST(test, vector_for_each_int) {
     }
 
     cvector_free_each_and_free(v, free);
+}
+
+struct data_t {
+    int num;
+    int a, b, c, d;
+};
+
+struct data_t **test(size_t count, ...) {
+    cvector_vector_type(struct data_t *) vec = NULL;
+
+    size_t i = 0;
+
+    va_list valist;
+    va_start(valist, count);
+
+    for (i = 0; i < count; i++) {
+        int num             = va_arg(valist, int);
+        struct data_t *data = calloc(sizeof(struct data_t), 1);
+        data->num           = num;
+        cvector_insert(vec, 0, data);
+    }
+
+    va_end(valist);
+    return vec;
+}
+
+UTEST(test, test_complex_insert) {
+
+    struct data_t **vec = test(4, 1, 2, 3, 4);
+    ASSERT_TRUE(cvector_size(vec) == 4);
+    ASSERT_TRUE(cvector_capacity(vec) >= 4);
+    ASSERT_TRUE(vec[0]->num == 4);
+    ASSERT_TRUE(vec[1]->num == 3);
+    ASSERT_TRUE(vec[2]->num == 2);
+    ASSERT_TRUE(vec[3]->num == 1);
+    cvector_free(vec);
 }
 
 UTEST_MAIN();
