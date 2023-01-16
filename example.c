@@ -1,6 +1,6 @@
 /* if this is defined, then the vector will double in capacity each
  * time it runs out of space. if it is not defined, then the vector will
- * be conservative, and will have a capcity no larger than necessary.
+ * be conservative, and will have a capacity no larger than necessary.
  * having this defined will minimize how often realloc gets called.
  */
 #define CVECTOR_LOGARITHMIC_GROWTH
