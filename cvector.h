@@ -48,7 +48,7 @@ typedef struct cvector_metadata_t {
  * @return the metadata pointer of the vector
  */
 #define cvector_vec_to_base(vec) \
-    (&((cvector_metadata_t *)vec)[-1])
+    (&((cvector_metadata_t *)(vec))[-1])
 
 /**
  * @brief cvector_base_to_vec - For internal use, converts a metadata pointer to a vector pointer
@@ -56,7 +56,7 @@ typedef struct cvector_metadata_t {
  * @return the vector
  */
 #define cvector_base_to_vec(ptr) \
-    ((void *)&((cvector_metadata_t *)ptr)[1])
+    ((void *)&((cvector_metadata_t *)(ptr))[1])
 
 /**
  * @brief cvector_capacity - gets the current capacity of the vector
