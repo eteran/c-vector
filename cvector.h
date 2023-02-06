@@ -133,6 +133,25 @@ typedef struct cvector_metadata_t {
     } while (0)
 
 /**
+ * @brief cvector_clear - erase all of the elements in the vector
+ * @param vec - the vector
+ * @return void
+ */
+#define cvector_clear(vec)                                                              \
+    do {                                                                                \
+        if (vec) {                                                                      \
+            cvector_elem_destructor_t elem_destructor__ = cvector_elem_destructor(vec); \
+            if (elem_destructor__) {                                                    \
+                size_t i__;                                                             \
+                for (i__ = 0; i__ < cvector_size(vec); ++i__) {                         \
+                    elem_destructor__(&vec[i__]);                                       \
+                }                                                                       \
+            }                                                                           \
+            cvector_set_size(vec, 0);                                                   \
+        }                                                                               \
+    } while (0)
+
+/**
  * @brief cvector_free - frees all memory associated with the vector
  * @param vec - the vector
  * @return void
