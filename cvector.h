@@ -459,26 +459,26 @@ typedef struct cvector_metadata_t {
  * @param count - the new capacity to set
  * @return void
  */
-#define cvector_set_capacity(vec, capacity)                                              \
-    do {                                                                                 \
-        const size_t cv_sz__ = (capacity) * sizeof(*(vec)) + sizeof(cvector_metadata_t); \
-        if (vec) {                                                                       \
-            if (cvector_size(vec) > (capacity)) {                                        \
-                cvector_erase_range((vec), (capacity), cvector_size(vec) - (capacity));  \
-            }                                                                            \
-            void *cv_p1__ = cvector_vec_to_base(vec);                                    \
-            void *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                      \
-            assert(cv_p2__);                                                             \
-            (vec) = cvector_base_to_vec(cv_p2__);                                        \
-        } else {                                                                         \
-            void *cv_p__ = cvector_clib_malloc(cv_sz__);                                 \
-            assert(cv_p__);                                                              \
-            (vec) = cvector_base_to_vec(cv_p__);                                         \
-            cvector_set_size((vec), 0);                                                  \
-            cvector_set_elem_destructor((vec), NULL);                                    \
-            cvector_set_elem_deep_copy((vec), NULL);                                     \
-        }                                                                                \
-        cvector_vec_to_base(vec)->capacity = (capacity);                                 \
+#define cvector_set_capacity(vec, count)                                              \
+    do {                                                                              \
+        const size_t cv_sz__ = (count) * sizeof(*(vec)) + sizeof(cvector_metadata_t); \
+        if (vec) {                                                                    \
+            if (cvector_size(vec) > (count)) {                                        \
+                cvector_erase_range((vec), (count), cvector_size(vec) - (count));     \
+            }                                                                         \
+            void *cv_p1__ = cvector_vec_to_base(vec);                                 \
+            void *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                   \
+            assert(cv_p2__);                                                          \
+            (vec) = cvector_base_to_vec(cv_p2__);                                     \
+        } else {                                                                      \
+            void *cv_p__ = cvector_clib_malloc(cv_sz__);                              \
+            assert(cv_p__);                                                           \
+            (vec) = cvector_base_to_vec(cv_p__);                                      \
+            cvector_set_size((vec), 0);                                               \
+            cvector_set_elem_destructor((vec), NULL);                                 \
+            cvector_set_elem_deep_copy((vec), NULL);                                  \
+        }                                                                             \
+        cvector_vec_to_base(vec)->capacity = (count);                                 \
     } while (0)
 
 #endif /* CVECTOR_H_ */
