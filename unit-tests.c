@@ -249,8 +249,8 @@ UTEST(test, vector_erase_fast) {
     cvector_erase_fast(a, 2);
 
     ASSERT_TRUE(cvector_size(a) == 3);
-	 ASSERT_TRUE(a[1] == 5);
-	 ASSERT_TRUE(a[2] == 4);
+    ASSERT_TRUE(a[1] == 5);
+    ASSERT_TRUE(a[2] == 4);
 
     cvector_free(a);
 }
@@ -285,27 +285,25 @@ UTEST(test, vector_erase_range) {
 
 struct deep_t {
     int a;
-    int* b;
+    int *b;
 };
 
 // in the test, the b member of deep_t structs will always be treated as an int[3] array
-void copy (void *elem1, void *elem2)
-{
-    struct deep_t* element1 = (struct deep_t*) elem1;
-    struct deep_t* element2 = (struct deep_t*) elem2;
+void copy(void *elem1, void *elem2) {
+    struct deep_t *element1 = (struct deep_t *)elem1;
+    struct deep_t *element2 = (struct deep_t *)elem2;
 
-    element2->b = malloc (3 * sizeof (*element2->b));
+    element2->b = malloc(3 * sizeof(*element2->b));
 
-    element2->a = element1->a;
+    element2->a    = element1->a;
     element2->b[0] = element1->b[0];
     element2->b[1] = element1->b[1];
     element2->b[2] = element1->b[2];
 }
 
-void destructor (void *elem)
-{
-    struct deep_t* element = (struct deep_t*) elem;
-    free (element->b);
+void destructor(void *elem) {
+    struct deep_t *element = (struct deep_t *)elem;
+    free(element->b);
 }
 
 UTEST(test, vector_deep_copy) {
@@ -317,8 +315,8 @@ UTEST(test, vector_deep_copy) {
     deep.a = 2;
     cvector_push_back(from, deep);
 
-    from[0].b = malloc (3 * sizeof (*from[0].b));
-    from[1].b = malloc (3 * sizeof (*from[1].b));
+    from[0].b = malloc(3 * sizeof(*from[0].b));
+    from[1].b = malloc(3 * sizeof(*from[1].b));
 
     from[0].b[0] = 3;
     from[0].b[1] = 4;

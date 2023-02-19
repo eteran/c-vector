@@ -111,12 +111,12 @@ typedef struct cvector_metadata_t {
  * @param capacity - Minimum capacity for the vector.
  * @return void
  */
-#define cvector_reserve(vec, capacity)                   \
-    do {                                                 \
-        size_t cv_cap__ = cvector_capacity(vec);         \
-        if (cv_cap__ < (capacity)) {                     \
-            cvector_set_capacity((vec), (capacity));     \
-        }                                                \
+#define cvector_reserve(vec, capacity)               \
+    do {                                             \
+        size_t cv_cap__ = cvector_capacity(vec);     \
+        if (cv_cap__ < (capacity)) {                 \
+            cvector_set_capacity((vec), (capacity)); \
+        }                                            \
     } while (0)
 
 /**
@@ -168,7 +168,7 @@ typedef struct cvector_metadata_t {
 
 /**
  * @brief cvector_erase_range - Removes count elements from the vector, starting with index i.
- * If the specified range would exceed the size of the vector, elements will only be erased 
+ * If the specified range would exceed the size of the vector, elements will only be erased
  * to the end of the vector.
  * @param vec - the vector
  * @param i - first index of elements to remove
@@ -354,7 +354,7 @@ typedef struct cvector_metadata_t {
     } while (0)
 
 /**
- * @brief cvector_deep_copy - Copy a vector and any deeper memory associated with 
+ * @brief cvector_deep_copy - Copy a vector and any deeper memory associated with
  * the vector's elements.  The deep copy function must copy _everything_ in an element,
  * as cvector will not copy anything here.
  * @param from - the original vector
@@ -427,11 +427,11 @@ typedef struct cvector_metadata_t {
  * @param elem_deep_copy_fn - function pointer of type cvector_elem_deep_copy_t used to make deep copies of elements
  * @return void
  */
-#define cvector_set_elem_deep_copy(vec, elem_deep_copy_fn)                    \
-    do {                                                                      \
-        if (vec) {                                                            \
-            cvector_vec_to_base(vec)->elem_deep_copy = (elem_deep_copy_fn);   \
-        }                                                                     \
+#define cvector_set_elem_deep_copy(vec, elem_deep_copy_fn)                  \
+    do {                                                                    \
+        if (vec) {                                                          \
+            cvector_vec_to_base(vec)->elem_deep_copy = (elem_deep_copy_fn); \
+        }                                                                   \
     } while (0)
 
 /**
@@ -452,8 +452,8 @@ typedef struct cvector_metadata_t {
     } while (0)
 
 /**
- * @brief cvector_set_capacity - Set the vector's capacity to be at least <capacity> 
- * elements big. If the new vector capacity is less than the current vector size, then 
+ * @brief cvector_set_capacity - Set the vector's capacity to be at least <capacity>
+ * elements big. If the new vector capacity is less than the current vector size, then
  * erase the elements at the end of the vector which would be beyond the new capacity.
  * @param vec - the vector
  * @param count - the new capacity to set
