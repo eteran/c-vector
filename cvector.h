@@ -175,26 +175,26 @@ typedef struct cvector_metadata_t {
  * @param count - the number of elements to remove
  * @return void
  */
-#define cvector_erase_range(vec, i, count)                                                  \
-    do {                                                                                    \
-        if (vec) {                                                                          \
-            const size_t cv_sz__ = cvector_size(vec);                                       \
-            if ((i) < cv_sz__) {                                                            \
-                size_t count__ = (i) + (count) > cv_sz__ ? cv_sz__ - (i) : (count);         \
-                cvector_elem_destructor_t elem_destructor__ = cvector_elem_destructor(vec); \
-                if (elem_destructor__) {                                                    \
-                    size_t i__;                                                             \
-                    for (i__ = (i); i__ < (i) + count__; ++i__) {                           \
-                        elem_destructor__(&vec[i__]);                                       \
-                    }                                                                       \
-                }                                                                           \
-                cvector_set_size((vec), cv_sz__ - count__);                                 \
-                memmove(                                                                    \
-                    (vec) + (i),                                                            \
-                    (vec) + (i) + count__,                                                  \
-                    sizeof(*(vec)) * (cv_sz__ - count__ - (i)));                            \
-            }                                                                               \
-        }                                                                                   \
+#define cvector_erase_range(vec, i, count)                                                                       \
+    do {                                                                                                         \
+        if (vec) {                                                                                               \
+            const size_t cv_sz__ = cvector_size(vec);                                                            \
+            if ((i) < cv_sz__) {                                                                                 \
+                size_t count__                              = (i) + (count) > cv_sz__ ? cv_sz__ - (i) : (count); \
+                cvector_elem_destructor_t elem_destructor__ = cvector_elem_destructor(vec);                      \
+                if (elem_destructor__) {                                                                         \
+                    size_t i__;                                                                                  \
+                    for (i__ = (i); i__ < (i) + count__; ++i__) {                                                \
+                        elem_destructor__(&vec[i__]);                                                            \
+                    }                                                                                            \
+                }                                                                                                \
+                cvector_set_size((vec), cv_sz__ - count__);                                                      \
+                memmove(                                                                                         \
+                    (vec) + (i),                                                                                 \
+                    (vec) + (i) + count__,                                                                       \
+                    sizeof(*(vec)) * (cv_sz__ - count__ - (i)));                                                 \
+            }                                                                                                    \
+        }                                                                                                        \
     } while (0)
 
 /**
