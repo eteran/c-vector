@@ -237,4 +237,140 @@ UTEST(test, test_complex_insert) {
     cvector_free(vec);
 }
 
+UTEST(test, vector_erase_fast) {
+    cvector_vector_type(int) a = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 2);
+    cvector_push_back(a, 3);
+    cvector_push_back(a, 4);
+    cvector_push_back(a, 5);
+    cvector_erase_fast(a, 1);
+    cvector_erase_fast(a, 2);
+
+    ASSERT_TRUE(cvector_size(a) == 3);
+	 ASSERT_TRUE(a[1] == 5);
+	 ASSERT_TRUE(a[2] == 4);
+
+    cvector_free(a);
+}
+
+UTEST(test, vector_erase_range) {
+    cvector_vector_type(int) a = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 2);
+    cvector_push_back(a, 3);
+    cvector_push_back(a, 4);
+    cvector_push_back(a, 5);
+    cvector_erase_range(a, 1, 3);
+
+    ASSERT_TRUE(cvector_size(a) == 2);
+    ASSERT_TRUE(a[1] == 5);
+
+    cvector_clear(a);
+
+    /* test if range would erase elements beyond the size of the vector */
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 2);
+    cvector_push_back(a, 3);
+    cvector_push_back(a, 4);
+    cvector_push_back(a, 5);
+    cvector_erase_range(a, 2, 10);
+
+    ASSERT_TRUE(cvector_size(a) == 2);
+
+    cvector_free(a);
+}
+
+struct deep_t {
+    int a;
+    int* b;
+};
+
+// in the test, the b member of deep_t structs will always be treated as an int[3] array
+void copy (void *elem1, void *elem2)
+{
+    struct deep_t* element1 = (struct deep_t*) elem1;
+    struct deep_t* element2 = (struct deep_t*) elem2;
+
+    element2->b = malloc (3 * sizeof (*element2->b));
+
+    element2->a = element1->a;
+    element2->b[0] = element1->b[0];
+    element2->b[1] = element1->b[1];
+    element2->b[2] = element1->b[2];
+}
+
+void destructor (void *elem)
+{
+    struct deep_t* element = (struct deep_t*) elem;
+    free (element->b);
+}
+
+UTEST(test, vector_deep_copy) {
+    cvector_vector_type(struct deep_t) from = NULL;
+    cvector_init(from, 2, destructor, copy);
+
+    struct deep_t deep = {1, NULL};
+    cvector_push_back(from, deep);
+    deep.a = 2;
+    cvector_push_back(from, deep);
+
+    from[0].b = malloc (3 * sizeof (*from[0].b));
+    from[1].b = malloc (3 * sizeof (*from[1].b));
+
+    from[0].b[0] = 3;
+    from[0].b[1] = 4;
+    from[0].b[2] = 5;
+
+    from[1].b[0] = 6;
+    from[1].b[1] = 7;
+    from[1].b[2] = 8;
+
+    cvector_vector_type(struct deep_t) to = NULL;
+    cvector_init(to, 0, destructor, copy);
+
+    cvector_deep_copy(from, to);
+
+    size_t i;
+    size_t j;
+    for (i = 0; i < cvector_size(from); ++i) {
+        for (j = 0; j < 3; ++j) {
+            ASSERT_TRUE(from[i].b[j] == to[i].b[j]);
+        }
+    }
+
+    cvector_free(from);
+    cvector_free(to);
+}
+
+UTEST(test, vector_set_capacity) {
+    cvector_vector_type(int) a = NULL;
+    cvector_init(a, 0, NULL, NULL);
+
+    size_t i;
+    for (i = 0; i < 10; ++i) {
+        cvector_push_back(a, i);
+    }
+
+    cvector_set_capacity(a, 20);
+    ASSERT_TRUE(cvector_capacity(a) == 20);
+    cvector_set_capacity(a, 15);
+    ASSERT_TRUE(cvector_capacity(a) == 15);
+    cvector_set_capacity(a, 5);
+    ASSERT_TRUE(cvector_capacity(a) == 5);
+    ASSERT_TRUE(cvector_size(a) == 5);
+
+    cvector_clear(a);
+    cvector_set_capacity(a, 10);
+
+    for (i = 0; i < 7; ++i) {
+        cvector_push_back(a, i);
+    }
+
+    cvector_shrink_to_fit(a);
+    ASSERT_TRUE(cvector_capacity(a) == 7);
+}
+
 UTEST_MAIN();
