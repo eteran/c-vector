@@ -115,12 +115,12 @@ typedef struct cvector_metadata_t {
  * @param elem_destructor_fn - element destructor function
  * @return void
  */
-#define cvector_init(vec, capacity, elem_destructor_fn) \
-    do {                                                                   \
-        if (!(vec)) {                                                      \
-            cvector_reserve((vec), capacity);                              \
-            cvector_set_elem_destructor((vec), (elem_destructor_fn));      \
-        }                                                                  \
+#define cvector_init(vec, capacity, elem_destructor_fn)               \
+    do {                                                              \
+        if (!(vec)) {                                                 \
+            cvector_reserve((vec), capacity);                         \
+            cvector_set_elem_destructor((vec), (elem_destructor_fn)); \
+        }                                                             \
     } while (0)
 
 /**
