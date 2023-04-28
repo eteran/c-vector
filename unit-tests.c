@@ -237,4 +237,25 @@ UTEST(test, test_complex_insert) {
     cvector_free(vec);
 }
 
+void cvector_free_destructor(void *p) {
+    free(*(void **)p);
+}
+
+UTEST(test, derefence_destructor) {
+    cvector_vector_type(char *) v = NULL;
+    cvector_init(v, 2, cvector_free_destructor);
+
+    char *ptr;
+    ptr = strdup("hello");
+    ASSERT_TRUE(!!ptr);
+    cvector_push_back(v, ptr);
+
+    ptr = strdup("world");
+    ASSERT_TRUE(!!ptr);
+    cvector_push_back(v, ptr);
+
+    cvector_vector_type(char *) *vec_ptr = &v;
+    cvector_free(*vec_ptr);
+}
+
 UTEST_MAIN();
