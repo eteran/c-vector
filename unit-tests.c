@@ -96,6 +96,25 @@ UTEST(test, vector_index) {
     cvector_free(v);
 }
 
+UTEST(test, vector_at) {
+    cvector_vector_type(int) a = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 5);
+    cvector_push_back(a, 4);
+    cvector_push_back(a, 5);
+
+    ASSERT_EQ(*cvector_at(a, 0), 1);
+    ASSERT_EQ(*cvector_at(a, 1), 5);
+    ASSERT_EQ(*cvector_at(a, 2), 4);
+
+    ASSERT_EQ(cvector_at(NULL, 2), NULL);
+    ASSERT_EQ(cvector_at(a, 500), NULL);
+    ASSERT_EQ(cvector_at(a, -500), NULL);
+
+    cvector_free(a);
+}
+
 UTEST(test, vector_insert_delete) {
     cvector_vector_type(int) a = NULL;
 

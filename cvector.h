@@ -296,6 +296,15 @@ typedef struct cvector_metadata_t {
     } while (0)
 
 /**
+ * @brief cvector_at - returns a reference to the element at specified location pos, with bounds checking
+ * @param vec - the vector
+ * @param pos - position of the element to return, as a size_t
+ * @return a pointer to the requested element (or NULL)
+ */
+#define cvector_at(vec, pos) \
+    ((vec) ? (((int)pos >= 0 && pos < cvector_size(vec)) ? &(vec)[pos] : NULL ) : NULL)
+
+/**
  * @brief cvector_set_capacity - For internal use, sets the capacity variable of the vector
  * @param vec - the vector
  * @param size - the new capacity to set

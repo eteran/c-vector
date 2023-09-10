@@ -143,6 +143,11 @@ int main() {
     assert(cvector_capacity(c) == 200);
     printf("c capacity: %zu\n", cvector_capacity(c));
     printf("c size        : %zu\n", cvector_size(c));
+
+    *cvector_at(c, 8) = 500;
+    assert(*cvector_at(c, 8) == 500);
+    assert(cvector_at(c, -100) == NULL);
+
     cvector_free(c);
 
     cvector_push_back(str_vect, strdup("Hello world"));
