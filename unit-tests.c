@@ -156,13 +156,13 @@ UTEST(test, vector_swap) {
     cvector_push_back(b, 6);
     cvector_push_back(b, 7);
 
-    ASSERT_EQ(cvector_size(a), 3);
-    ASSERT_EQ(cvector_size(b), 4);
+    ASSERT_EQ(cvector_size(a), (size_t)3);
+    ASSERT_EQ(cvector_size(b), (size_t)4);
 
     cvector_swap(a, b, int);
 
-    ASSERT_EQ(cvector_size(a), 4);
-    ASSERT_EQ(cvector_size(b), 3);
+    ASSERT_EQ(cvector_size(a), (size_t)4);
+    ASSERT_EQ(cvector_size(b), (size_t)3);
 
     ASSERT_EQ(a[0], 4);
     ASSERT_EQ(a[1], 5);
