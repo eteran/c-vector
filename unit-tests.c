@@ -201,6 +201,22 @@ UTEST(test, vector_for_each_int) {
     cvector_free_each_and_free(v, free);
 }
 
+UTEST(test, vector_shrink_to_fit) {
+    cvector_vector_type(int) a = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 5);
+    cvector_push_back(a, 4);
+
+    cvector_reserve(a, 50);
+    ASSERT_EQ(cvector_capacity(a), (size_t)50);
+
+    cvector_shrink_to_fit(a);
+    ASSERT_EQ(cvector_capacity(a), (size_t)3);
+
+    cvector_free(a);
+}
+
 struct data_t {
     int num;
     int a, b, c, d;
