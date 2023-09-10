@@ -143,6 +143,33 @@ UTEST(test, vector_copy) {
     cvector_free(b);
 }
 
+UTEST(test, vector_swap) {
+    cvector_vector_type(int) a = NULL;
+    cvector_vector_type(int) b = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 2);
+    cvector_push_back(a, 3);
+
+    cvector_push_back(b, 4);
+    cvector_push_back(b, 5);
+    cvector_push_back(b, 6);
+    cvector_push_back(b, 7);
+
+    ASSERT_EQ(cvector_size(a), 3);
+    ASSERT_EQ(cvector_size(b), 4);
+
+    cvector_swap(a, b, int);
+
+    ASSERT_EQ(cvector_size(a), 4);
+    ASSERT_EQ(cvector_size(b), 3);
+
+    ASSERT_EQ(a[0], 4);
+    ASSERT_EQ(a[1], 5);
+    ASSERT_EQ(b[0], 1);
+    ASSERT_EQ(b[1], 2);
+}
+
 UTEST(test, vector_reserve) {
     int i;
     cvector_vector_type(int) c = NULL;
