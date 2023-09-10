@@ -48,7 +48,7 @@ UTEST(test, vector_iterator) {
 
     /* iterator over the vector using "iterator" style */
     if (v) {
-        int *it;
+        cvector_iterator(int) it;
         int i = 0;
         for (it = cvector_begin(v); it != cvector_end(v); ++it) {
             switch (i) {
@@ -182,7 +182,7 @@ UTEST(test, vector_free_all) {
 }
 
 UTEST(test, vector_for_each_int) {
-    char **it;
+    cvector_iterator(char *) it;
     int i;
     cvector_vector_type(char *) v = NULL;
     for (i = 0; i < 10; ++i) {

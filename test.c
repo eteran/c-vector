@@ -34,7 +34,7 @@ int main() {
 
     /* iterator over the vector using "iterator" style */
     if (v) {
-        int *it;
+        cvector_iterator(int) it;
         int i = 0;
         for (it = cvector_begin(v); it != cvector_end(v); ++it) {
             printf("v[%d] = %d\n", i, *it);

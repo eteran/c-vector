@@ -43,6 +43,11 @@ typedef struct cvector_metadata_t {
 #define cvector_vector_type(type) type *
 
 /**
+ * @brief cvector_iterator - The iterator type used for cvector
+ */
+#define cvector_iterator(type) cvector_vector_type(type)
+
+/**
  * @brief cvector_vec_to_base - For internal use, converts a vector pointer to a metadata pointer
  * @param vec - the vector
  * @return the metadata pointer of the vector
