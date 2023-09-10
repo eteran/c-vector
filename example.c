@@ -15,10 +15,10 @@ int main(int argc, char *argv[]) {
      * and you'd have a vector of floats :-). NULL will have a size
      * and capacity of 0. Additionally, vector_begin and vector_end will
      * return NULL on a NULL vector. Alternatively, for clarity of writing
-     * you can use the cvector_vector_type macro to define a vector of a
-     * given type.
+     * you can use the cvector or cvector_vector_type macros to define a
+     * vector of a given type.
      */
-    cvector_vector_type(int) v = NULL;
+    cvector(int) v = NULL;
 
     (void)argc;
     (void)argv;
