@@ -238,7 +238,7 @@ UTEST(test, test_complex_insert) {
 }
 
 void cvector_free_destructor(void *p) {
-    free(*(void **)p);
+    free(p);
 }
 
 UTEST(test, derefence_destructor) {

@@ -179,7 +179,9 @@ typedef struct cvector_metadata_t {
             if (elem_destructor__) {                                                    \
                 size_t i__;                                                             \
                 for (i__ = 0; i__ < cvector_size(vec); ++i__) {                         \
-                    elem_destructor__(&(vec)[i__]);                                     \
+                    void *p__;                                                          \
+                    memcpy(&p__, &(vec)[i__], sizeof(void*));                           \
+                    elem_destructor__(p__);                                             \
                 }                                                                       \
             }                                                                           \
             cvector_clib_free(p1__);                                                    \

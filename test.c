@@ -13,11 +13,13 @@
 #include "cvector_utils.h"
 
 int main() {
-    cvector_vector_type(int) v           = NULL;
-    cvector_vector_type(int) a           = NULL;
-    cvector_vector_type(int) b           = NULL;
-    cvector_vector_type(int) c           = NULL;
-    cvector_vector_type(char *) str_vect = NULL;
+    cvector_vector_type(int) v            = NULL;
+    cvector_vector_type(int) a            = NULL;
+    cvector_vector_type(int) b            = NULL;
+    cvector_vector_type(int) c            = NULL;
+    cvector_vector_type(char *) str_vect  = NULL;
+    cvector_vector_type(char *) str_vect1 = NULL;
+    cvector_vector_type(char *) str_vect2 = NULL;
 
     /* add some elements to the back */
     cvector_push_back(v, 10);
@@ -145,6 +147,9 @@ int main() {
     printf("c size        : %zu\n", cvector_size(c));
     cvector_free(c);
 
+    /* str_vect
+     * manually free each element
+     */
     cvector_push_back(str_vect, strdup("Hello world"));
     cvector_push_back(str_vect, strdup("Good  bye world"));
     cvector_push_back(str_vect, strdup("not today"));
@@ -155,7 +160,38 @@ int main() {
             printf("v[%zu] = %s\n", i, str_vect[i]);
         }
     }
-
     cvector_free_each_and_free(str_vect, free);
+
+    /* str_vect1
+     * auto free each element by freeing the vector itself
+     */
+    cvector_init(str_vect1, 1, free);
+    cvector_push_back(str_vect1, strdup("1: Hello world"));
+    cvector_push_back(str_vect1, strdup("1: Good  bye world"));
+    cvector_push_back(str_vect1, strdup("1: not today"));
+
+    if (str_vect1) {
+        size_t i;
+        for (i = 0; i < cvector_size(str_vect1); ++i) {
+            printf("v[%zu] = %s\n", i, str_vect1[i]);
+        }
+    }
+    cvector_free(str_vect1);
+
+    /* str_vect2
+     * elements are out of scope, do not free them
+     */
+    cvector_push_back(str_vect2, "2: Hello world");
+    cvector_push_back(str_vect2, "2: Good  bye world");
+    cvector_push_back(str_vect2, "2: not today");
+
+    if (str_vect2) {
+        size_t i;
+        for (i = 0; i < cvector_size(str_vect2); ++i) {
+            printf("v[%zu] = %s\n", i, str_vect2[i]);
+        }
+    }
+    cvector_free(str_vect2);
+
     return 0;
 }
