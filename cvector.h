@@ -35,6 +35,7 @@ typedef struct cvector_metadata_t {
     size_t size;
     size_t capacity;
     cvector_elem_destructor_t elem_destructor;
+    size_t grow_strategy;
 } cvector_metadata_t;
 
 /**
@@ -84,6 +85,16 @@ typedef struct cvector_metadata_t {
     ((vec) ? cvector_vec_to_base(vec)->elem_destructor : NULL)
 
 /**
+ * @brief cvector_grow_strategy - gets the current grow strategy of the vector
+ * when grow_strategy is zero vector duplicates its size each time the growing
+ * is required. Otherwise the vector increases its size by the value of grow_strategy
+ * @param vec - the vector
+ * @return grow strategy of the vector, 0 means exponential
+ */
+#define cvector_grow_strategy(vec) \
+    ((vec) ? cvector_vec_to_base(vec)->grow_strategy : (size_t)0)
+
+/**
  * @brief cvector_empty - returns non-zero if the vector is empty
  * @param vec - the vector
  * @return non-zero if empty, zero if non-empty
@@ -103,7 +114,7 @@ typedef struct cvector_metadata_t {
 #define cvector_reserve(vec, n)                  \
     do {                                         \
         size_t cv_cap__ = cvector_capacity(vec); \
-        if (cv_cap__ < (n)) {                    \
+        if (cv_cap__ < ((size_t)n)) {            \
             cvector_grow((vec), (n));            \
         }                                        \
     } while (0)
@@ -113,14 +124,16 @@ typedef struct cvector_metadata_t {
  * @param vec - the vector
  * @param capacity - vector capacity to reserve
  * @param elem_destructor_fn - element destructor function
+ * @param grow_strategy - vectors grow strategy (0 - exponential)
  * @return void
  */
-#define cvector_init(vec, capacity, elem_destructor_fn)               \
-    do {                                                              \
-        if (!(vec)) {                                                 \
-            cvector_reserve((vec), capacity);                         \
-            cvector_set_elem_destructor((vec), (elem_destructor_fn)); \
-        }                                                             \
+#define cvector_init(vec, capacity, elem_destructor_fn, grow_strategy)  \
+    do {                                                                \
+        if (!(vec)) {                                                   \
+            cvector_reserve((vec), capacity);                           \
+            cvector_set_elem_destructor((vec), (elem_destructor_fn));   \
+            cvector_set_grow_strategy((vec), (grow_strategy));          \
+        }                                                               \
     } while (0)
 
 /**
@@ -202,30 +215,16 @@ typedef struct cvector_metadata_t {
 #define cvector_end(vec) \
     ((vec) ? &((vec)[cvector_size(vec)]) : NULL)
 
-/* user request to use logarithmic growth algorithm */
-#ifdef CVECTOR_LOGARITHMIC_GROWTH
-
 /**
  * @brief cvector_compute_next_grow - returns an the computed size in next vector grow
- * size is increased by multiplication of 2
  * @param size - current size
  * @return size after next vector grow
  */
-#define cvector_compute_next_grow(size) \
-    ((size) ? ((size) << 1) : 1)
-
-#else
-
-/**
- * @brief cvector_compute_next_grow - returns an the computed size in next vector grow
- * size is increased by 1
- * @param size - current size
- * @return size after next vector grow
- */
-#define cvector_compute_next_grow(size) \
-    ((size) + 1)
-
-#endif /* CVECTOR_LOGARITHMIC_GROWTH */
+#define cvector_compute_next_grow(vec, size)                            \
+    ((vec) ? (cvector_grow_strategy(vec) ?                              \
+              ((size) + cvector_grow_strategy(vec)) :                   \
+              ((size) ? ((size) << 1) : 1))                             \
+     : (size) + 1)
 
 /**
  * @brief cvector_push_back - adds an element to the end of the vector
@@ -233,14 +232,14 @@ typedef struct cvector_metadata_t {
  * @param value - the value to add
  * @return void
  */
-#define cvector_push_back(vec, value)                                 \
-    do {                                                              \
-        size_t cv_cap__ = cvector_capacity(vec);                      \
-        if (cv_cap__ <= cvector_size(vec)) {                          \
-            cvector_grow((vec), cvector_compute_next_grow(cv_cap__)); \
-        }                                                             \
-        (vec)[cvector_size(vec)] = (value);                           \
-        cvector_set_size((vec), cvector_size(vec) + 1);               \
+#define cvector_push_back(vec, value)                                      \
+    do {                                                                   \
+        size_t cv_cap__ = cvector_capacity(vec);                           \
+        if (cv_cap__ <= cvector_size(vec)) {                               \
+            cvector_grow((vec), cvector_compute_next_grow(vec, cv_cap__)); \
+        }                                                                  \
+        (vec)[cvector_size(vec)] = (value);                                \
+        cvector_set_size((vec), cvector_size(vec) + 1);                    \
     } while (0)
 
 /**
@@ -250,20 +249,20 @@ typedef struct cvector_metadata_t {
  * @param val - value to be copied (or moved) to the inserted elements.
  * @return void
  */
-#define cvector_insert(vec, pos, val)                                 \
-    do {                                                              \
-        size_t cv_cap__ = cvector_capacity(vec);                      \
-        if (cv_cap__ <= cvector_size(vec)) {                          \
-            cvector_grow((vec), cvector_compute_next_grow(cv_cap__)); \
-        }                                                             \
-        if ((pos) < cvector_size(vec)) {                              \
-            memmove(                                                  \
-                (vec) + (pos) + 1,                                    \
-                (vec) + (pos),                                        \
-                sizeof(*(vec)) * ((cvector_size(vec)) - (pos)));      \
-        }                                                             \
-        (vec)[(pos)] = (val);                                         \
-        cvector_set_size((vec), cvector_size(vec) + 1);               \
+#define cvector_insert(vec, pos, val)                                      \
+    do {                                                                   \
+        size_t cv_cap__ = cvector_capacity(vec);                           \
+        if (cv_cap__ <= cvector_size(vec)) {                               \
+            cvector_grow((vec), cvector_compute_next_grow(vec, cv_cap__)); \
+        }                                                                  \
+        if ((pos) < cvector_size(vec)) {                                   \
+            memmove(                                                       \
+                (vec) + (pos) + 1,                                         \
+                (vec) + (pos),                                             \
+                sizeof(*(vec)) * ((cvector_size(vec)) - (pos)));           \
+        }                                                                  \
+        (vec)[(pos)] = (val);                                              \
+        cvector_set_size((vec), cvector_size(vec) + 1);                    \
     } while (0)
 
 /**
@@ -336,6 +335,22 @@ typedef struct cvector_metadata_t {
     } while (0)
 
 /**
+ * @brief grow_strategy - set the vector grow strategy. If the
+ * grow strategy is 0 the vector grows exponentially (duplicates its size each
+ * time when vector growing is required. Otherwise it just increases it size
+ * by the value provided by the parameter
+ * @param vec - the vector
+ * @param grow_strategy - the grow strategy
+ * @return void
+ */
+#define cvector_set_grow_strategy(vec, grow_strategy_)                   \
+    do {                                                                 \
+        if (vec) {                                                       \
+            cvector_vec_to_base(vec)->grow_strategy = (grow_strategy_);  \
+        }                                                               \
+    } while (0)
+
+/**
  * @brief cvector_grow - For internal use, ensures that the vector is at least <count> elements big
  * @param vec - the vector
  * @param count - the new capacity to set
@@ -355,6 +370,7 @@ typedef struct cvector_metadata_t {
             (vec) = cvector_base_to_vec(cv_p__);                                      \
             cvector_set_size((vec), 0);                                               \
             cvector_set_elem_destructor((vec), NULL);                                 \
+            cvector_set_grow_strategy((vec), 0);                                      \
         }                                                                             \
         cvector_set_capacity((vec), (count));                                         \
     } while (0)

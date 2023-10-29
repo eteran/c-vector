@@ -243,7 +243,7 @@ void cvector_free_destructor(void *p) {
 
 UTEST(test, derefence_destructor) {
     cvector_vector_type(char *) v = NULL;
-    cvector_init(v, 2, cvector_free_destructor);
+    cvector_init(v, 2, cvector_free_destructor, 0);
 
     char *ptr;
     ptr = strdup("hello");
