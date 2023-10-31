@@ -48,7 +48,7 @@ UTEST(test, vector_iterator) {
 
     /* iterator over the vector using "iterator" style */
     if (v) {
-        int *it;
+        cvector_iterator(int) it;
         int i = 0;
         for (it = cvector_begin(v); it != cvector_end(v); ++it) {
             switch (i) {
@@ -143,6 +143,33 @@ UTEST(test, vector_copy) {
     cvector_free(b);
 }
 
+UTEST(test, vector_swap) {
+    cvector_vector_type(int) a = NULL;
+    cvector_vector_type(int) b = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 2);
+    cvector_push_back(a, 3);
+
+    cvector_push_back(b, 4);
+    cvector_push_back(b, 5);
+    cvector_push_back(b, 6);
+    cvector_push_back(b, 7);
+
+    ASSERT_EQ(cvector_size(a), (size_t)3);
+    ASSERT_EQ(cvector_size(b), (size_t)4);
+
+    cvector_swap(a, b, int);
+
+    ASSERT_EQ(cvector_size(a), (size_t)4);
+    ASSERT_EQ(cvector_size(b), (size_t)3);
+
+    ASSERT_EQ(a[0], 4);
+    ASSERT_EQ(a[1], 5);
+    ASSERT_EQ(b[0], 1);
+    ASSERT_EQ(b[1], 2);
+}
+
 UTEST(test, vector_reserve) {
     int i;
     cvector_vector_type(int) c = NULL;
@@ -182,7 +209,7 @@ UTEST(test, vector_free_all) {
 }
 
 UTEST(test, vector_for_each_int) {
-    char **it;
+    cvector_iterator(char *) it;
     int i;
     cvector_vector_type(char *) v = NULL;
     for (i = 0; i < 10; ++i) {
@@ -199,6 +226,22 @@ UTEST(test, vector_for_each_int) {
     }
 
     cvector_free_each_and_free(v, free);
+}
+
+UTEST(test, vector_shrink_to_fit) {
+    cvector_vector_type(int) a = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 5);
+    cvector_push_back(a, 4);
+
+    cvector_reserve(a, 50);
+    ASSERT_EQ(cvector_capacity(a), (size_t)50);
+
+    cvector_shrink_to_fit(a);
+    ASSERT_EQ(cvector_capacity(a), (size_t)3);
+
+    cvector_free(a);
 }
 
 struct data_t {

@@ -7,26 +7,38 @@
 #ifndef CVECTOR_H_
 #define CVECTOR_H_
 
-#include <assert.h> /* for assert */
-#include <stdlib.h> /* for malloc/realloc/free */
-#include <string.h> /* for memcpy/memmove */
-
 /* cvector heap implemented using C library malloc() */
 
 /* in case C library malloc() needs extra protection,
  * allow these defines to be overridden.
  */
 #ifndef cvector_clib_free
+#include <stdlib.h> /* for free */
 #define cvector_clib_free free
 #endif
 #ifndef cvector_clib_malloc
+#include <stdlib.h> /* for malloc */
 #define cvector_clib_malloc malloc
 #endif
 #ifndef cvector_clib_calloc
+#include <stdlib.h> /* for calloc */
 #define cvector_clib_calloc calloc
 #endif
 #ifndef cvector_clib_realloc
+#include <stdlib.h> /* for realloc */
 #define cvector_clib_realloc realloc
+#endif
+#ifndef cvector_clib_assert
+#include <assert.h> /* for assert */
+#define cvector_clib_assert assert
+#endif
+#ifndef cvector_clib_memcpy
+#include <string.h> /* for memcpy */
+#define cvector_clib_memcpy memcpy
+#endif
+#ifndef cvector_clib_memmove
+#include <string.h> /* for memmove */
+#define cvector_clib_memmove memmove
 #endif
 
 typedef void (*cvector_elem_destructor_t)(void *elem);
@@ -48,6 +60,11 @@ typedef struct cvector_metadata_t {
  * @param type The type of vector to act on.
  */
 #define cvector(type) cvector_vector_type(type)
+
+/*
+ * @brief cvector_iterator - The iterator type used for cvector
+ */
+#define cvector_iterator(type) cvector_vector_type(type)
 
 /**
  * @brief cvector_vec_to_base - For internal use, converts a vector pointer to a metadata pointer
@@ -146,7 +163,7 @@ typedef struct cvector_metadata_t {
                     elem_destructor__(&(vec)[i]);                                           \
                 }                                                                           \
                 cvector_set_size((vec), cv_sz__ - 1);                                       \
-                memmove(                                                                    \
+                cvector_clib_memmove(                                                                    \
                     (vec) + (i),                                                            \
                     (vec) + (i) + 1,                                                        \
                     sizeof(*(vec)) * (cv_sz__ - 1 - (i)));                                  \
@@ -264,7 +281,7 @@ typedef struct cvector_metadata_t {
             cvector_grow((vec), cvector_compute_next_grow(cv_cap__)); \
         }                                                             \
         if ((pos) < cvector_size(vec)) {                              \
-            memmove(                                                  \
+            cvector_clib_memmove(                                                  \
                 (vec) + (pos) + 1,                                    \
                 (vec) + (pos),                                        \
                 sizeof(*(vec)) * ((cvector_size(vec)) - (pos)));      \
@@ -298,8 +315,24 @@ typedef struct cvector_metadata_t {
         if ((from)) {                                                   \
             cvector_grow(to, cvector_size(from));                       \
             cvector_set_size(to, cvector_size(from));                   \
-            memcpy((to), (from), cvector_size(from) * sizeof(*(from))); \
+            cvector_clib_memcpy((to), (from), cvector_size(from) * sizeof(*(from))); \
         }                                                               \
+    } while (0)
+
+/**
+ * @brief cvector_swap - exchanges the content of the vector by the content of another vector of the same type
+ * @param vec - the original vector
+ * @param other - the other vector to swap content with
+ * @param type - the type of both vectors
+ * @return void
+ */
+#define cvector_swap(vec, other, type)                 \
+    do {                                               \
+        if (vec && other) {                            \
+            cvector_vector_type(type) cv_swap__ = vec; \
+            vec = other;                               \
+            other = cv_swap__;                         \
+        }                                              \
     } while (0)
 
 /**
@@ -354,16 +387,29 @@ typedef struct cvector_metadata_t {
         if (vec) {                                                                    \
             void *cv_p1__ = cvector_vec_to_base(vec);                                 \
             void *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                   \
-            assert(cv_p2__);                                                          \
+            cvector_clib_assert(cv_p2__);                                                          \
             (vec) = cvector_base_to_vec(cv_p2__);                                     \
         } else {                                                                      \
             void *cv_p__ = cvector_clib_malloc(cv_sz__);                              \
-            assert(cv_p__);                                                           \
+            cvector_clib_assert(cv_p__);                                                           \
             (vec) = cvector_base_to_vec(cv_p__);                                      \
             cvector_set_size((vec), 0);                                               \
             cvector_set_elem_destructor((vec), NULL);                                 \
         }                                                                             \
         cvector_set_capacity((vec), (count));                                         \
+    } while (0)
+
+/**
+ * @brief cvector_shrink_to_fit - requests the container to reduce its capacity to fit its size
+ * @param vec - the vector
+ * @return void
+ */
+#define cvector_shrink_to_fit(vec)                     \
+    do {                                               \
+        if (vec) {                                     \
+            const size_t cv_sz___ = cvector_size(vec); \
+            cvector_grow(vec, cv_sz___);               \
+        }                                              \
     } while (0)
 
 #endif /* CVECTOR_H_ */
