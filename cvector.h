@@ -376,4 +376,17 @@ typedef struct cvector_metadata_t {
         cvector_set_capacity((vec), (count));                                         \
     } while (0)
 
+/**
+ * @brief cvector_shrink_to_fit - requests the container to reduce its capacity to fit its size
+ * @param vec - the vector
+ * @return void
+ */
+#define cvector_shrink_to_fit(vec)                     \
+    do {                                               \
+        if (vec) {                                     \
+            const size_t cv_sz___ = cvector_size(vec); \
+            cvector_grow(vec, cv_sz___);               \
+        }                                              \
+    } while (0)
+
 #endif /* CVECTOR_H_ */
