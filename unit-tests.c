@@ -97,7 +97,7 @@ UTEST(test, vector_index) {
 }
 
 UTEST(test, vector_insert_delete) {
-    cvector_vector_type(int) a = NULL;
+    cvector(int) a = NULL;
 
     cvector_push_back(a, 1);
     cvector_push_back(a, 5);
