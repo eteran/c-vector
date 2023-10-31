@@ -163,7 +163,7 @@ typedef struct cvector_metadata_t {
                     elem_destructor__(&(vec)[i]);                                           \
                 }                                                                           \
                 cvector_set_size((vec), cv_sz__ - 1);                                       \
-                cvector_clib_memmove(                                                                    \
+                cvector_clib_memmove(                                                       \
                     (vec) + (i),                                                            \
                     (vec) + (i) + 1,                                                        \
                     sizeof(*(vec)) * (cv_sz__ - 1 - (i)));                                  \
@@ -281,7 +281,7 @@ typedef struct cvector_metadata_t {
             cvector_grow((vec), cvector_compute_next_grow(cv_cap__)); \
         }                                                             \
         if ((pos) < cvector_size(vec)) {                              \
-            cvector_clib_memmove(                                                  \
+            cvector_clib_memmove(                                     \
                 (vec) + (pos) + 1,                                    \
                 (vec) + (pos),                                        \
                 sizeof(*(vec)) * ((cvector_size(vec)) - (pos)));      \
@@ -310,13 +310,13 @@ typedef struct cvector_metadata_t {
  * @param to - destination to which the function copy to
  * @return void
  */
-#define cvector_copy(from, to)                                          \
-    do {                                                                \
-        if ((from)) {                                                   \
-            cvector_grow(to, cvector_size(from));                       \
-            cvector_set_size(to, cvector_size(from));                   \
+#define cvector_copy(from, to)                                                       \
+    do {                                                                             \
+        if ((from)) {                                                                \
+            cvector_grow(to, cvector_size(from));                                    \
+            cvector_set_size(to, cvector_size(from));                                \
             cvector_clib_memcpy((to), (from), cvector_size(from) * sizeof(*(from))); \
-        }                                                               \
+        }                                                                            \
     } while (0)
 
 /**
@@ -326,13 +326,13 @@ typedef struct cvector_metadata_t {
  * @param type - the type of both vectors
  * @return void
  */
-#define cvector_swap(vec, other, type)                 \
-    do {                                               \
-        if (vec && other) {                            \
-            cvector_vector_type(type) cv_swap__ = vec; \
-            vec = other;                               \
-            other = cv_swap__;                         \
-        }                                              \
+#define cvector_swap(vec, other, type)                       \
+    do {                                                     \
+        if (vec && other) {                                  \
+            cvector_vector_type(type) cv_swap__ = vec;       \
+            vec                                 = other;     \
+            other                               = cv_swap__; \
+        }                                                    \
     } while (0)
 
 /**
@@ -387,11 +387,11 @@ typedef struct cvector_metadata_t {
         if (vec) {                                                                    \
             void *cv_p1__ = cvector_vec_to_base(vec);                                 \
             void *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                   \
-            cvector_clib_assert(cv_p2__);                                                          \
+            cvector_clib_assert(cv_p2__);                                             \
             (vec) = cvector_base_to_vec(cv_p2__);                                     \
         } else {                                                                      \
             void *cv_p__ = cvector_clib_malloc(cv_sz__);                              \
-            cvector_clib_assert(cv_p__);                                                           \
+            cvector_clib_assert(cv_p__);                                              \
             (vec) = cvector_base_to_vec(cv_p__);                                      \
             cvector_set_size((vec), 0);                                               \
             cvector_set_elem_destructor((vec), NULL);                                 \
