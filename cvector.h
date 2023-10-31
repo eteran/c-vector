@@ -313,6 +313,22 @@ typedef struct cvector_metadata_t {
     } while (0)
 
 /**
+ * @brief cvector_swap - exchanges the content of the vector by the content of another vector of the same type
+ * @param vec - the original vector
+ * @param other - the other vector to swap content with
+ * @param type - the type of both vectors
+ * @return void
+ */
+#define cvector_swap(vec, other, type)                 \
+    do {                                               \
+        if (vec && other) {                            \
+            cvector_vector_type(type) cv_swap__ = vec; \
+            vec = other;                               \
+            other = cv_swap__;                         \
+        }                                              \
+    } while (0)
+
+/**
  * @brief cvector_set_capacity - For internal use, sets the capacity variable of the vector
  * @param vec - the vector
  * @param size - the new capacity to set
