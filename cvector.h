@@ -412,4 +412,27 @@ typedef struct cvector_metadata_t {
         }                                              \
     } while (0)
 
+/**
+ * @brief cvector_at - returns a reference to the element at position n in the vector.
+ * @param vec - the vector
+ * @param n - position of an element in the vector.
+ * @return the element at the specified position in the vector.
+ */
+#define cvector_at(vec, n) \
+    ((vec) ? ((n < 0 || n >= cvector_size(vec)) ? NULL : &(vec)[n]) : NULL)
+
+/**
+ * @brief cvector_front - returns a reference to the first element in the vector. Unlike member cvector_begin, which returns an iterator to this same element, this function returns a direct reference.
+ * @return a reference to the first element in the vector container.
+ */
+#define cvector_front(vec) \
+    ((vec) ? ((cvector_size(vec) > 0) ? cvector_at(vec, 0) : NULL) : NULL)
+
+/**
+ * @brief cvector_back - returns a reference to the last element in the vector.Unlike member cvector_end, which returns an iterator just past this element, this function returns a direct reference.
+ * @return a reference to the last element in the vector.
+ */
+#define cvector_back(vec) \
+    ((vec) ? ((cvector_size(vec) > 0) ? cvector_at(vec, cvector_size(vec) - 1) : NULL) : NULL)
+
 #endif /* CVECTOR_H_ */

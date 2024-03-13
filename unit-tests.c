@@ -7,6 +7,69 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+UTEST(test, cvector_back) {
+    cvector_vector_type(int) v = NULL;
+    cvector_push_back(v, 0);
+    cvector_push_back(v, 1);
+
+    ASSERT_TRUE(cvector_size(v) == 2);
+
+    int *back = cvector_back(v);
+    ASSERT_TRUE(*back == 1);
+
+    cvector_push_back(v, 2);
+
+    back = cvector_back(v);
+    ASSERT_TRUE(*back == 2);
+
+    cvector_free(v);
+}
+
+UTEST(test, cvector_front) {
+    cvector_vector_type(int) v = NULL;
+    cvector_push_back(v, 0);
+    cvector_push_back(v, 1);
+
+    ASSERT_TRUE(cvector_size(v) == 2);
+
+    int *front = cvector_front(v);
+    ASSERT_TRUE(*front == 0);
+
+    cvector_erase(v, 0);
+    front = cvector_front(v);
+    ASSERT_TRUE(*front == 1);
+
+    cvector_free(v);
+}
+
+UTEST(test, vector_at) {
+    cvector_vector_type(int) v = NULL;
+    cvector_push_back(v, 0);
+    cvector_push_back(v, 1);
+    cvector_push_back(v, 2);
+    cvector_push_back(v, 3);
+    cvector_push_back(v, 4);
+
+    ASSERT_TRUE(cvector_size(v) == 5);
+
+    if (v) {
+        int i = 0;
+        for (; i < cvector_size(v); i++) {
+            ASSERT_TRUE(*cvector_at(v, i) == i);
+        }
+    }
+
+    /* test non-exists position */
+    int pos_non_exists = 999;
+    ASSERT_TRUE(cvector_at(v, pos_non_exists) == NULL);
+
+    /* remove last element*/
+    cvector_pop_back(v);
+    ASSERT_TRUE(cvector_at(v, 4) == NULL);
+
+    cvector_free(v);
+}
+
 UTEST(test, vector_empty) {
     cvector_vector_type(int) v = NULL;
     ASSERT_TRUE(cvector_capacity(v) == 0);
