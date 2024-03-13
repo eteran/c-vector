@@ -54,7 +54,7 @@ UTEST(test, vector_at) {
 
     if (v) {
         int i = 0;
-        for (; i < cvector_size(v); i++) {
+        for (; i < (int)cvector_size(v); i++) {
             ASSERT_TRUE(*cvector_at(v, i) == i);
         }
     }
