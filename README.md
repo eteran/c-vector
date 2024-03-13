@@ -90,3 +90,30 @@ int main(int argc, char *argv[]) {
 }
 
 ```
+
+### API
+
+| `std::vector` | `cvector` |
+| ------------- | --------- |
+| [`std::vector<int> v`](https://en.cppreference.com/w/cpp/container/vector/vector) | `cvector(int) v` |
+| [Destructor](https://en.cppreference.com/w/cpp/container/vector/%7Evector) | `cvector_free(v)` |
+| [`v.at(3)`](https://en.cppreference.com/w/cpp/container/vector/at) | `cvector_at(v, 3)` |
+| [`v[3]`](https://en.cppreference.com/w/cpp/container/vector/operator_at) | `v[3]` |
+| [`v.front()`](https://en.cppreference.com/w/cpp/container/vector/front) | `cvector_front(v)` |
+| [`v.back()`](https://en.cppreference.com/w/cpp/container/vector/back) | `cvector_back(v)` |
+| [`v.begin()`](https://en.cppreference.com/w/cpp/container/vector/begin) | `cvector_begin(v)` |
+| [`v.end()`](https://en.cppreference.com/w/cpp/container/vector/begin) | `cvector_end(v)` |
+| [`v.empty()`](https://en.cppreference.com/w/cpp/container/vector/empty) | `cvector_empty(v)` |
+| [`v.size()`](https://en.cppreference.com/w/cpp/container/vector/size) | `cvector_size(v)` |
+| [`v.capacity()`](https://en.cppreference.com/w/cpp/container/vector/capacity) | `cvector_capacity(v)` |
+| [`v.shrink_to_fit()`](https://en.cppreference.com/w/cpp/container/vector/shrink_to_fit) | `cvector_shrink_to_fit(v)` |
+| [`v.clear()`](https://en.cppreference.com/w/cpp/container/vector/clear) | `cvector_clear(v)` |
+| [`v.insert(pos, value)`](https://en.cppreference.com/w/cpp/container/vector/insert) | `cvector_insert(v, pos, value)` |
+| [`v.erase()`](https://en.cppreference.com/w/cpp/container/vector/erase) | `cvector_erase(v)` |
+| [`v.push_back(value)`](https://en.cppreference.com/w/cpp/container/vector/push_back) | `cvector_push_back(v, value)` |
+| [`v.pop_back()`](https://en.cppreference.com/w/cpp/container/vector/pop_back) | `cvector_pop_back(v)` |
+| [`v.reserve(new_cap)`](https://en.cppreference.com/w/cpp/container/vector/reserve) | `cvector_reserve(v, new_cap)` |
+| [`v.swap(other)`](https://en.cppreference.com/w/cpp/container/vector/swap) | `cvector_swap(v, other)` |
+| [`std::vector<int> other = v;`](https://en.cppreference.com/w/cpp/named_req/CopyConstructible) | `cvector(int) other; cvector_copy(v, other);` |
+
+

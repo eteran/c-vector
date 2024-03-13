@@ -70,6 +70,7 @@ typedef struct cvector_metadata_t {
  * @brief cvector_vec_to_base - For internal use, converts a vector pointer to a metadata pointer
  * @param vec - the vector
  * @return the metadata pointer of the vector
+ * @internal
  */
 #define cvector_vec_to_base(vec) \
     (&((cvector_metadata_t *)(vec))[-1])
@@ -78,6 +79,7 @@ typedef struct cvector_metadata_t {
  * @brief cvector_base_to_vec - For internal use, converts a metadata pointer to a vector pointer
  * @param ptr - pointer to the metadata
  * @return the vector
+ * @internal
  */
 #define cvector_base_to_vec(ptr) \
     ((void *)&((cvector_metadata_t *)(ptr))[1])
@@ -340,6 +342,7 @@ typedef struct cvector_metadata_t {
  * @param vec - the vector
  * @param size - the new capacity to set
  * @return void
+ * @internal
  */
 #define cvector_set_capacity(vec, size)                  \
     do {                                                 \
@@ -353,6 +356,7 @@ typedef struct cvector_metadata_t {
  * @param vec - the vector
  * @param size - the new capacity to set
  * @return void
+ * @internal
  */
 #define cvector_set_size(vec, _size)                  \
     do {                                              \
@@ -380,6 +384,7 @@ typedef struct cvector_metadata_t {
  * @param vec - the vector
  * @param count - the new capacity to set
  * @return void
+ * @internal
  */
 #define cvector_grow(vec, count)                                                      \
     do {                                                                              \
