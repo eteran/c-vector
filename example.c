@@ -32,13 +32,13 @@ int main(int argc, char *argv[]) {
     /* remove an element by specifying an array subscript */
     cvector_erase(v, 2);
 
-    int * twenty = cvector_at(v, 1);
+    int *twenty = cvector_at(v, 1);
     printf("twenty : %d\n", *twenty);
 
-    int * front = cvector_front(v);
+    int *front = cvector_front(v);
     printf("front : %d\n", *front);
 
-    int * back = cvector_back(v);
+    int *back = cvector_back(v);
     printf("back : %d\n", *back);
 
     /* remove an element from the back */
