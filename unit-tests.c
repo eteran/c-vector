@@ -259,6 +259,7 @@ UTEST(test, vector_reserve) {
 UTEST(test, vector_free_all) {
     int i;
     cvector_vector_type(char *) v = NULL;
+    cvector_set_elem_destructor(v, free);
     for (i = 0; i < 10; ++i) {
         char *p = malloc(6);
         strcpy(p, "hello");
@@ -268,16 +269,17 @@ UTEST(test, vector_free_all) {
     ASSERT_TRUE(cvector_size(v) == 10);
     ASSERT_TRUE(cvector_capacity(v) >= 10);
 
-    cvector_free_each_and_free(v, free);
+    cvector_free(v);
 }
 
 UTEST(test, vector_for_each_int) {
-    cvector_iterator(char *) it;
+    cvector_iterator(int *) it;
     int i;
-    cvector_vector_type(char *) v = NULL;
+    cvector_vector_type(int *) v = NULL;
+    cvector_set_elem_destructor(v, free);
     for (i = 0; i < 10; ++i) {
-        char *p = malloc(6);
-        strcpy(p, "hello");
+        int *p = malloc(sizeof(int));
+        *p     = 42;
         cvector_push_back(v, p);
     }
 
@@ -285,10 +287,14 @@ UTEST(test, vector_for_each_int) {
     ASSERT_TRUE(cvector_capacity(v) >= 10);
 
     cvector_for_each_in(it, v) {
-        ASSERT_TRUE(strcmp(*it, "hello") == 0);
+        /* NOTE(eteran): double pointer because we have an interator to an int*,
+         * so first deref to get the int*, the second to get int. Sure, this is a
+         * silly thing to do, but this is a test
+         */
+        ASSERT_TRUE(**it == 42);
     }
 
-    cvector_free_each_and_free(v, free);
+    cvector_free(v);
 }
 
 UTEST(test, vector_shrink_to_fit) {

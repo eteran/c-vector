@@ -18,6 +18,7 @@ int main() {
     cvector_vector_type(int) b           = NULL;
     cvector_vector_type(int) c           = NULL;
     cvector_vector_type(char *) str_vect = NULL;
+    cvector_set_elem_destructor(str_vect, free);
 
     /* add some elements to the back */
     cvector_push_back(v, 10);
@@ -156,6 +157,6 @@ int main() {
         }
     }
 
-    cvector_free_each_and_free(str_vect, free);
+    cvector_free(str_vect);
     return 0;
 }
