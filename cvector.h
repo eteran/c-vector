@@ -419,7 +419,7 @@ typedef struct cvector_metadata_t {
  * @return the element at the specified position in the vector.
  */
 #define cvector_at(vec, n) \
-    ((vec) ? ((n < 0 || n >= cvector_size(vec)) ? NULL : &(vec)[n]) : NULL)
+    ((vec) ? (((int)(n) < 0 || (size_t)(n) >= cvector_size(vec)) ? NULL : &(vec)[n]) : NULL)
 
 /**
  * @brief cvector_front - returns a reference to the first element in the vector. Unlike member cvector_begin, which returns an iterator to this same element, this function returns a direct reference.
