@@ -7,6 +7,18 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+static void free_string(void *ptr) {
+    if (ptr) {
+        free(*(char **)ptr);
+    }
+}
+
+static void free_int(void *ptr) {
+    if (ptr) {
+        free(*(int **)ptr);
+    }
+}
+
 UTEST(test, cvector_back) {
     cvector_vector_type(int) v = NULL;
     cvector_push_back(v, 0);
@@ -259,7 +271,7 @@ UTEST(test, vector_reserve) {
 UTEST(test, vector_free_all) {
     int i;
     cvector_vector_type(char *) v = NULL;
-    cvector_set_elem_destructor(v, free);
+    cvector_init(v, 1, free_string);
     for (i = 0; i < 10; ++i) {
         char *p = malloc(6);
         strcpy(p, "hello");
@@ -276,7 +288,7 @@ UTEST(test, vector_for_each_int) {
     cvector_iterator(int *) it;
     int i;
     cvector_vector_type(int *) v = NULL;
-    cvector_set_elem_destructor(v, free);
+    cvector_init(v, 1, free_int);
     for (i = 0; i < 10; ++i) {
         int *p = malloc(sizeof(int));
         *p     = 42;

@@ -41,7 +41,17 @@
 #define cvector_clib_memmove memmove
 #endif
 
-typedef void (*cvector_elem_destructor_t)(void *elem);
+/* NOTE: Similar to C's qsort and bsearch, you will receive a T*
+ * for a vector of Ts. This means that you cannot use `free` directly
+ * as a destructor. Instead if you have for example a cvector_vector_type(int *)
+ * you will need to supply a function which casts `elem_ptr` to an `int**`
+ * and then does a free on what that pointer points to:
+ *
+ * ex:
+ *
+ * void free_int(void *p) { free(*(int **)p); }
+ */
+typedef void (*cvector_elem_destructor_t)(void *elem_ptr);
 
 typedef struct cvector_metadata_t {
     size_t size;
@@ -367,7 +377,7 @@ typedef struct cvector_metadata_t {
 
 /**
  * @brief cvector_set_elem_destructor - set the element destructor function
- * used to clean up removed elements
+ * used to clean up removed elements. The vector must NOT be NULL for this to do anything.
  * @param vec - the vector
  * @param elem_destructor_fn - function pointer of type cvector_elem_destructor_t used to destroy elements
  * @return void

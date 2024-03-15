@@ -12,13 +12,20 @@
 #include "cvector.h"
 #include "cvector_utils.h"
 
+static void free_string(void *str) {
+    if (str) {
+        free(*(char **)str);
+    }
+}
+
 int main() {
+
     cvector_vector_type(int) v           = NULL;
     cvector_vector_type(int) a           = NULL;
     cvector_vector_type(int) b           = NULL;
     cvector_vector_type(int) c           = NULL;
     cvector_vector_type(char *) str_vect = NULL;
-    cvector_set_elem_destructor(str_vect, free);
+    cvector_init(str_vect, 1, free_string);
 
     /* add some elements to the back */
     cvector_push_back(v, 10);
