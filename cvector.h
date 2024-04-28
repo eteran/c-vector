@@ -450,4 +450,26 @@ typedef struct cvector_metadata_t {
 #define cvector_back(vec) \
     ((vec) ? ((cvector_size(vec) > 0) ? cvector_at(vec, cvector_size(vec) - 1) : NULL) : NULL)
 
+/**
+ * @brief cvector_resize - resizes the container to contain count elements.
+ * @param vec - the vector
+ * @param count - new size of the vector.
+ * @return void
+ */
+#define cvector_resize(vec, count)                      \
+    do {                                                \
+        if (vec) {                                      \
+            size_t cv_sz_count__ = (size_t)(count);     \
+            size_t cv_sz__ = cvector_size(vec);         \
+            if (cv_sz_count__ > cv_sz__) {              \
+                cvector_reserve((vec), cv_sz_count__);  \
+                cvector_set_size((vec), cv_sz_count__); \
+                break;                                  \
+            }                                           \
+            while (cv_sz_count__ < cv_sz__--) {         \
+                cvector_pop_back(vec);                  \
+            }                                           \
+        }                                               \
+    } while (0)
+
 #endif /* CVECTOR_H_ */

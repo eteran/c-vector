@@ -325,6 +325,27 @@ UTEST(test, vector_shrink_to_fit) {
     cvector_free(a);
 }
 
+UTEST(test, vector_resize) {
+    cvector_vector_type(int) a = NULL;
+
+    cvector_push_back(a, 1);
+    cvector_push_back(a, 2);
+    cvector_push_back(a, 3);
+
+    cvector_resize(a, 50);
+    ASSERT_EQ(cvector_size(a), (size_t)50);
+    ASSERT_EQ(a[1], 2);
+
+    cvector_resize(a, 10);
+    ASSERT_EQ(cvector_size(a), (size_t)10);
+    ASSERT_EQ(a[2], 3);
+
+    cvector_resize(a, 0);
+    ASSERT_EQ(cvector_size(a), (size_t)0);
+
+    cvector_free(a);
+}
+
 struct data_t {
     int num;
     int a, b, c, d;
