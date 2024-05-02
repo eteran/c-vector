@@ -457,24 +457,23 @@ typedef struct cvector_metadata_t {
  * @param value - the value to initialize new elements with
  * @return void
  */
-#define cvector_resize(vec, count, value)               \
-    do {                                                \
-        if (vec) {                                      \
-            size_t cv_sz_count__ = (size_t)(count);     \
-            size_t cv_sz__       = cvector_size(vec);   \
-            if (cv_sz_count__ > cv_sz__) {              \
-                cvector_reserve((vec), cv_sz_count__);  \
-                cvector_set_size((vec), cv_sz_count__); \
-                do {                                    \
-                    (vec)[cv_sz__++] = (value);         \
-                } while (cv_sz__ < cv_sz_count__);      \
-            }                                           \
-            else {                                      \
-                while (cv_sz_count__ < cv_sz__--) {     \
-                    cvector_pop_back(vec);              \
-                }                                       \
-            }                                           \
-        }                                               \
+#define cvector_resize(vec, count, value)                          \
+    do {                                                           \
+        if (vec) {                                                 \
+            size_t cv_sz_count__ = (size_t)(count);                \
+            size_t cv_sz__       = cvector_vec_to_base(vec)->size; \
+            if (cv_sz_count__ > cv_sz__) {                         \
+                cvector_reserve((vec), cv_sz_count__);             \
+                cvector_set_size((vec), cv_sz_count__);            \
+                do {                                               \
+                    (vec)[cv_sz__++] = (value);                    \
+                } while (cv_sz__ < cv_sz_count__);                 \
+            } else {                                               \
+                while (cv_sz_count__ < cv_sz__--) {                \
+                    cvector_pop_back(vec);                         \
+                }                                                  \
+            }                                                      \
+        }                                                          \
     } while (0)
 
 #endif /* CVECTOR_H_ */
