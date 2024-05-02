@@ -332,15 +332,18 @@ UTEST(test, vector_resize) {
     cvector_push_back(a, 2);
     cvector_push_back(a, 3);
 
-    cvector_resize(a, 50);
+    cvector_resize(a, 50, 4);
     ASSERT_EQ(cvector_size(a), (size_t)50);
     ASSERT_EQ(a[1], 2);
+    ASSERT_EQ(a[30], 4);
+    ASSERT_EQ(a[49], 4);
+    ASSERT_EQ(a[49], 4);
 
-    cvector_resize(a, 10);
+    cvector_resize(a, 10, 8);
     ASSERT_EQ(cvector_size(a), (size_t)10);
     ASSERT_EQ(a[2], 3);
 
-    cvector_resize(a, 0);
+    cvector_resize(a, 0, 0);
     ASSERT_EQ(cvector_size(a), (size_t)0);
 
     cvector_free(a);
