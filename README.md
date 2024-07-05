@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
 | [`v.shrink_to_fit()`](https://en.cppreference.com/w/cpp/container/vector/shrink_to_fit) | `cvector_shrink_to_fit(v)` |
 | [`v.clear()`](https://en.cppreference.com/w/cpp/container/vector/clear) | `cvector_clear(v)` |
 | [`v.insert(pos, value)`](https://en.cppreference.com/w/cpp/container/vector/insert) | `cvector_insert(v, pos, value)` |
-| [`v.erase(v.begin() + 2)`](https://en.cppreference.com/w/cpp/container/vector/erase) | `cvector_erase(2)` |
+| [`v.erase(v.begin() + 2)`](https://en.cppreference.com/w/cpp/container/vector/erase) | `cvector_erase(v, 2)` |
 | [`v.push_back(value)`](https://en.cppreference.com/w/cpp/container/vector/push_back) | `cvector_push_back(v, value)` |
 | [`v.pop_back()`](https://en.cppreference.com/w/cpp/container/vector/pop_back) | `cvector_pop_back(v)` |
 | [`v.reserve(new_cap)`](https://en.cppreference.com/w/cpp/container/vector/reserve) | `cvector_reserve(v, new_cap)` |
