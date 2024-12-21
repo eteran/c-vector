@@ -57,18 +57,13 @@ build
 
 !.vscode/*.code-snippets
 ZERO_CHECK.*
-unit-tests.*
-test-c-vector.*
 RUN_TESTS.*
-c-vector.sln
-c-vector-example.*
-ALL_BUILD.vcxproj.*
-ALL_BUILD.vcxproj
-c-vector-example.dir
+ALL_BUILD.*
 Debug
-test-c-vector.dir
-unit-tests.dir
 x64
+*.dir
+test-*
+c-vector.sln
+c-vector-*
 unit-tests
-test-c-vector
-c-vector-example
+unit-tests.*
