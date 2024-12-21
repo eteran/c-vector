@@ -69,7 +69,6 @@ Debug
 test-c-vector.dir
 unit-tests.dir
 x64
-.gitignore
 unit-tests
 test-c-vector
 c-vector-example
