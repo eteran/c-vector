@@ -56,3 +56,14 @@ build
 !.vscode/extensions.json
 
 !.vscode/*.code-snippets
+ZERO_CHECK.*
+RUN_TESTS.*
+ALL_BUILD.*
+Debug
+x64
+*.dir
+test-*
+c-vector.sln
+c-vector-*
+unit-tests
+unit-tests.*
