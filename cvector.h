@@ -434,21 +434,21 @@ typedef struct cvector_metadata_t {
  * @return the element at the specified position in the vector.
  */
 #define cvector_at(vec, n) \
-    ((vec) ? (((int)(n) < 0 || (size_t)(n) >= cvector_size(vec)) ? NULL : &(vec)[n]) : NULL)
+    ((vec)[(cvector_clib_assert((vec) && (ptrdiff_t)(n) < (ptrdiff_t)cvector_size(vec)), (n))])
 
 /**
  * @brief cvector_front - returns a reference to the first element in the vector. Unlike member cvector_begin, which returns an iterator to this same element, this function returns a direct reference.
  * @return a reference to the first element in the vector container.
  */
 #define cvector_front(vec) \
-    ((vec) ? ((cvector_size(vec) > 0) ? cvector_at(vec, 0) : NULL) : NULL)
+    (cvector_at(vec, 0))
 
 /**
  * @brief cvector_back - returns a reference to the last element in the vector.Unlike member cvector_end, which returns an iterator just past this element, this function returns a direct reference.
  * @return a reference to the last element in the vector.
  */
 #define cvector_back(vec) \
-    ((vec) ? ((cvector_size(vec) > 0) ? cvector_at(vec, cvector_size(vec) - 1) : NULL) : NULL)
+    (cvector_at(vec, cvector_size(vec) - 1))
 
 /**
  * @brief cvector_resize - resizes the container to contain count elements.
