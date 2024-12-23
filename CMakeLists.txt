@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7.0)
-project(c-vector VERSION 0.1.0)
+project(c-vector LANGUAGES C VERSION 0.1.0)
 enable_testing()
 
 # ------ cvector library ------
