@@ -40,6 +40,7 @@
 #include <string.h> /* for memmove */
 #define cvector_clib_memmove memmove
 #endif
+#include <stddef.h> /* for size_t, ptrdiff_t */
 
 /* NOTE: Similar to C's qsort and bsearch, you will receive a T*
  * for a vector of Ts. This means that you cannot use `free` directly
