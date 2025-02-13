@@ -1,6 +1,5 @@
 
 
-#define CVECTOR_LOGARITHMIC_GROWTH
 #include "cvector.h"
 #include "cvector_utils.h"
 #include "utest/utest.h"
