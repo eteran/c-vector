@@ -238,19 +238,8 @@ typedef struct cvector_metadata_t {
 #define cvector_end(vec) \
     ((vec) ? &((vec)[cvector_size(vec)]) : NULL)
 
-/* user request to use logarithmic growth algorithm */
-#ifdef CVECTOR_LOGARITHMIC_GROWTH
-
-/**
- * @brief cvector_compute_next_grow - returns an the computed size in next vector grow
- * size is increased by multiplication of 2
- * @param size - current size
- * @return size after next vector grow
- */
-#define cvector_compute_next_grow(size) \
-    ((size) ? ((size) << 1) : 1)
-
-#else
+/* user request to use linear growth algorithm */
+#ifdef CVECTOR_LINEAR_GROWTH
 
 /**
  * @brief cvector_compute_next_grow - returns an the computed size in next vector grow
@@ -261,7 +250,18 @@ typedef struct cvector_metadata_t {
 #define cvector_compute_next_grow(size) \
     ((size) + 1)
 
-#endif /* CVECTOR_LOGARITHMIC_GROWTH */
+#else
+
+/**
+ * @brief cvector_compute_next_grow - returns an the computed size in next vector grow
+ * size is increased by multiplication of 2
+ * @param size - current size
+ * @return size after next vector grow
+ */
+#define cvector_compute_next_grow(size) \
+    ((size) ? ((size) << 1) : 1)
+
+#endif /* CVECTOR_LINEAR_GROWTH */
 
 /**
  * @brief cvector_push_back - adds an element to the end of the vector

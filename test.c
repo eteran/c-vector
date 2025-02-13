@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define CVECTOR_LOGARITHMIC_GROWTH
-
 #include "cvector.h"
 #include "cvector_utils.h"
 

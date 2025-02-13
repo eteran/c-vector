@@ -23,12 +23,12 @@ concerned with these details. The total overhead is
 To allow the code to be maximally generic, it is implemented as all macros, and
 is thus header only. Usage is simple:
 ```c
-/* if this is defined, then the vector will double in capacity each
- * time it runs out of space. if it is not defined, then the vector will
- * be conservative, and will have a capcity no larger than necessary.
- * having this defined will minimize how often realloc gets called.
+/* if this is defined, then the vector will increase in capacity by one
+ * each time it runs out of space. if it is not defined, then the vector will
+ * be liberal, and will double in capacity each time it runs out of space.
+ * having this defined will minimize how much unused space is allocated.
  */
-#define CVECTOR_LOGARITHMIC_GROWTH
+#define CVECTOR_LINEAR_GROWTH
 
 #include "cvector.h"
 #include <stdio.h>
