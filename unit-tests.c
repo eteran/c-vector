@@ -26,11 +26,13 @@ UTEST(test, cvector_back) {
 
     ASSERT_TRUE(cvector_size(v) == 2);
 
-    ASSERT_TRUE(cvector_back(v) == 1);
+    int *back = cvector_back(v);
+    ASSERT_TRUE(*back == 1);
 
     cvector_push_back(v, 2);
 
-    ASSERT_TRUE(cvector_back(v) == 2);
+    back = cvector_back(v);
+    ASSERT_TRUE(*back == 2);
 
     cvector_free(v);
 }
@@ -42,10 +44,12 @@ UTEST(test, cvector_front) {
 
     ASSERT_TRUE(cvector_size(v) == 2);
 
-    ASSERT_TRUE(cvector_front(v) == 0);
+    int *front = cvector_front(v);
+    ASSERT_TRUE(*front == 0);
 
     cvector_erase(v, 0);
-    ASSERT_TRUE(cvector_front(v) == 1);
+    front = cvector_front(v);
+    ASSERT_TRUE(*front == 1);
 
     cvector_free(v);
 }
@@ -63,9 +67,17 @@ UTEST(test, vector_at) {
     if (v) {
         int i = 0;
         for (; i < (int)cvector_size(v); i++) {
-            ASSERT_TRUE(cvector_at(v, i) == i);
+            ASSERT_TRUE(*cvector_at(v, i) == i);
         }
     }
+
+    /* test non-exists position */
+    int pos_non_exists = 999;
+    ASSERT_TRUE(cvector_at(v, pos_non_exists) == NULL);
+
+    /* remove last element*/
+    cvector_pop_back(v);
+    ASSERT_TRUE(cvector_at(v, 4) == NULL);
 
     cvector_free(v);
 }
