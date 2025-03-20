@@ -6,15 +6,9 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-static void free_string(void *ptr) {
+static void free_elem(void *ptr) {
     if (ptr) {
-        free(*(char **)ptr);
-    }
-}
-
-static void free_int(void *ptr) {
-    if (ptr) {
-        free(*(int **)ptr);
+        free(*(void **)ptr);
     }
 }
 
@@ -242,6 +236,9 @@ UTEST(test, vector_swap) {
     ASSERT_EQ(a[1], 5);
     ASSERT_EQ(b[0], 1);
     ASSERT_EQ(b[1], 2);
+
+    cvector_free(a);
+    cvector_free(b);
 }
 
 UTEST(test, vector_reserve) {
@@ -270,7 +267,7 @@ UTEST(test, vector_reserve) {
 UTEST(test, vector_free_all) {
     int i;
     cvector_vector_type(char *) v = NULL;
-    cvector_init(v, 1, free_string);
+    cvector_init(v, 1, free_elem);
     for (i = 0; i < 10; ++i) {
         char *p = malloc(6);
         strcpy(p, "hello");
@@ -287,7 +284,7 @@ UTEST(test, vector_for_each_int) {
     cvector_iterator(int *) it;
     int i;
     cvector_vector_type(int *) v = NULL;
-    cvector_init(v, 1, free_int);
+    cvector_init(v, 1, free_elem);
     for (i = 0; i < 10; ++i) {
         int *p = malloc(sizeof(int));
         *p     = 42;
@@ -355,6 +352,7 @@ struct data_t {
 
 struct data_t **test(size_t count, ...) {
     cvector_vector_type(struct data_t *) vec = NULL;
+    cvector_init(vec, 1, free_elem);
 
     size_t i = 0;
 
@@ -384,13 +382,9 @@ UTEST(test, test_complex_insert) {
     cvector_free(vec);
 }
 
-void cvector_free_destructor(void *p) {
-    free(*(void **)p);
-}
-
 UTEST(test, derefence_destructor) {
     cvector_vector_type(char *) v = NULL;
-    cvector_init(v, 2, cvector_free_destructor);
+    cvector_init(v, 2, free_elem);
 
     char *ptr;
     ptr = strdup("hello");
