@@ -1,13 +1,11 @@
-/*
- * Copyright (c) 2015 Evan Teran
- *
- * License: The MIT License (MIT)
- */
-
 #ifndef CVECTOR_H_
 #define CVECTOR_H_
-
-/* cvector heap implemented using C library malloc() */
+/**
+ * @copyright Copyright (c) 2015 Evan Teran,
+ * License: The MIT License (MIT)
+ * @brief cvector heap implemented using C library malloc()
+ * @file cvector.h
+ */
 
 /* in case C library malloc() needs extra protection,
  * allow these defines to be overridden.
@@ -61,18 +59,19 @@ typedef struct cvector_metadata_t {
 
 /**
  * @brief cvector_vector_type - The vector type used in this library
+ * @param type The type of vector to act on.
  */
 #define cvector_vector_type(type) type *
 
 /**
  * @brief cvector - Syntactic sugar to retrieve a vector type
- *
  * @param type The type of vector to act on.
  */
 #define cvector(type) cvector_vector_type(type)
 
-/*
+/**
  * @brief cvector_iterator - The iterator type used for cvector
+ * @param type The type of iterator to act on.
  */
 #define cvector_iterator(type) cvector_vector_type(type)
 
@@ -144,8 +143,8 @@ typedef struct cvector_metadata_t {
         }                                        \
     } while (0)
 
-/*
- * @brief cvector_init - Initialize a vector.  The vector must be NULL for this to do anything.
+/**
+ * @brief cvector_init - Initialize a vector. The vector must be NULL for this to do anything.
  * @param vec - the vector
  * @param capacity - vector capacity to reserve
  * @param elem_destructor_fn - element destructor function
@@ -364,7 +363,7 @@ typedef struct cvector_metadata_t {
 /**
  * @brief cvector_set_size - For internal use, sets the size variable of the vector
  * @param vec - the vector
- * @param size - the new capacity to set
+ * @param _size - the new capacity to set
  * @return void
  * @internal
  */
@@ -390,7 +389,7 @@ typedef struct cvector_metadata_t {
     } while (0)
 
 /**
- * @brief cvector_grow - For internal use, ensures that the vector is at least <count> elements big
+ * @brief cvector_grow - For internal use, ensures that the vector is at least `count` elements big
  * @param vec - the vector
  * @param count - the new capacity to set
  * @return void
@@ -438,6 +437,7 @@ typedef struct cvector_metadata_t {
 
 /**
  * @brief cvector_front - returns a reference to the first element in the vector. Unlike member cvector_begin, which returns an iterator to this same element, this function returns a direct reference.
+ * @param vec - the vector
  * @return a reference to the first element in the vector container.
  */
 #define cvector_front(vec) \
@@ -445,6 +445,7 @@ typedef struct cvector_metadata_t {
 
 /**
  * @brief cvector_back - returns a reference to the last element in the vector.Unlike member cvector_end, which returns an iterator just past this element, this function returns a direct reference.
+ * @param vec - the vector
  * @return a reference to the last element in the vector.
  */
 #define cvector_back(vec) \

@@ -1,5 +1,11 @@
 #ifndef CVECTOR_UTILS_H_
 #define CVECTOR_UTILS_H_
+/**
+ * @copyright Copyright (c) 2022 Evan Teran,
+ * License: The MIT License (MIT)
+ * @brief extends the cvector library
+ * @file cvector_utils.h
+ */
 
 /**
  * @brief cvector_for_each_in - for header to iterate over vector each element's address
