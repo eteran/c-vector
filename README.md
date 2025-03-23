@@ -9,9 +9,9 @@ It works by using the same trick as many allocators, which is to slightly
 allocate more data than requested, and using that extra padding in the front
 as storage for meta-data. Thus any non-null vector looks like this in memory:
 
-	+-----------------+------+----------+---------+
-	| elem_destructor | size | capacity | data... |
-	+-----------------+------+----------+---------+
+	+------+----------+-----------------+---------+
+	| size | capacity | elem_destructor | data... |
+	+------+----------+-----------------+---------+
 	                                    ^
 	                                    | user's pointer
 
