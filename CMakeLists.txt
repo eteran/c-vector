@@ -5,7 +5,7 @@ enable_testing()
 # ------ cvector library ------
 add_library(${CMAKE_PROJECT_NAME} INTERFACE)
 
-target_sources(c-vector INTERFACE
+target_sources(${CMAKE_PROJECT_NAME} INTERFACE
 	${CMAKE_CURRENT_SOURCE_DIR}/cvector.h
 	${CMAKE_CURRENT_SOURCE_DIR}/cvector_utils.h
 )
