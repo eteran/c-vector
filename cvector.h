@@ -87,7 +87,7 @@ typedef struct cvector_metadata_t {
  * @internal
  */
 #define cvector_vec_to_base(vec) \
-    (&((cvector_metadata_t *)(vec))[-1])
+    (&((cvector_metadata_t *)(void *)(vec))[-1])
 
 /**
  * @brief cvector_base_to_vec - For internal use, converts a metadata pointer to a vector pointer
