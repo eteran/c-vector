@@ -10,22 +10,27 @@
 /* in case C library malloc() needs extra protection,
  * allow these defines to be overridden.
  */
-#ifndef cvector_clib_free
-#include <stdlib.h> /* for free */
+/* functions for allocation and deallocation need to correspond to each other, fall back to C library functions if not all are overridden */
+#if !defined(cvector_clib_free) || !defined(cvector_clib_malloc) || !defined(cvector_clib_calloc) || !defined(cvector_clib_realloc)
+#ifdef cvector_clib_free
+#undef cvector_clib_free
+#endif
+#ifdef cvector_clib_malloc
+#undef cvector_clib_malloc
+#endif
+#ifdef cvector_clib_calloc
+#undef cvector_clib_calloc
+#endif
+#ifdef cvector_clib_realloc
+#undef cvector_clib_realloc
+#endif
+#include <stdlib.h>
 #define cvector_clib_free free
-#endif
-#ifndef cvector_clib_malloc
-#include <stdlib.h> /* for malloc */
 #define cvector_clib_malloc malloc
-#endif
-#ifndef cvector_clib_calloc
-#include <stdlib.h> /* for calloc */
 #define cvector_clib_calloc calloc
-#endif
-#ifndef cvector_clib_realloc
-#include <stdlib.h> /* for realloc */
 #define cvector_clib_realloc realloc
 #endif
+/* functions independent of memory allocation */
 #ifndef cvector_clib_assert
 #include <assert.h> /* for assert */
 #define cvector_clib_assert assert
