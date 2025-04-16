@@ -463,23 +463,30 @@ typedef struct cvector_metadata_t {
  * @param value - the value to initialize new elements with
  * @return void
  */
-#define cvector_resize(vec, count, value)                              \
-    do {                                                               \
-        if (vec) {                                                     \
-            size_t cv_resize_count__ = (size_t)(count);                \
-            size_t cv_resize_sz__    = cvector_vec_to_base(vec)->size; \
-            if (cv_resize_count__ > cv_resize_sz__) {                  \
-                cvector_reserve((vec), cv_resize_count__);             \
-                cvector_set_size((vec), cv_resize_count__);            \
-                do {                                                   \
-                    (vec)[cv_resize_sz__++] = (value);                 \
-                } while (cv_resize_sz__ < cv_resize_count__);          \
-            } else {                                                   \
-                while (cv_resize_count__ < cv_resize_sz__--) {         \
-                    cvector_pop_back(vec);                             \
-                }                                                      \
-            }                                                          \
-        }                                                              \
+#define cvector_resize(vec, count, value)                                                                                        \
+    do {                                                                                                                         \
+        size_t cv_resize_count__ = (size_t)(count);                                                                              \
+        if ((vec)) {                                                                                                             \
+            size_t cv_resize_sz__ = cvector_vec_to_base(vec)->size;                                                              \
+            if (cv_resize_count__ > cv_resize_sz__) {                                                                            \
+                cvector_reserve((vec), cv_resize_count__);                                                                       \
+                cvector_set_size((vec), cv_resize_count__);                                                                      \
+                do {                                                                                                             \
+                    (vec)[cv_resize_sz__++] = (value);                                                                           \
+                } while (cv_resize_sz__ < cv_resize_count__);                                                                    \
+            }                                                                                                                    \
+            else {                                                                                                               \
+                while (cv_resize_count__ < cv_resize_sz__--) {                                                                   \
+                    cvector_pop_back(vec);                                                                                       \
+                }                                                                                                                \
+            }                                                                                                                    \
+        }                                                                                                                        \
+        else {                                                                                                                   \
+            cvector_reserve((vec), cv_resize_count__);                                                                           \
+            cvector_set_size((vec), cv_resize_count__);                                                                          \
+            for (size_t i = 0; i < cv_resize_count__; i++)                                                                       \
+                (vec)[i] = (value);                                                                                              \
+        }                                                                                                                        \
     } while (0)
 
 #endif /* CVECTOR_H_ */
