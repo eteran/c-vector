@@ -457,6 +457,13 @@ typedef struct cvector_metadata_t {
     ((vec) ? ((cvector_size(vec) > 0) ? cvector_at(vec, cvector_size(vec) - 1) : NULL) : NULL)
 
 /**
+ * @brief cvector_data - returns a pointer to the memory used by the vector to store its elements.
+ * @param vec - the vector
+ * @return a pointer to the first element (or NULL)
+ */
+#define cvector_data(vec) cvector_begin(vec)
+
+/**
  * @brief cvector_resize - resizes the container to contain count elements.
  * @param vec - the vector
  * @param count - new size of the vector

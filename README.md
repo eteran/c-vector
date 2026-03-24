@@ -114,6 +114,7 @@ int main(int argc, char *argv[]) {
 | [`v.pop_back()`](https://en.cppreference.com/w/cpp/container/vector/pop_back) | `cvector_pop_back(v)` |
 | [`v.reserve(new_cap)`](https://en.cppreference.com/w/cpp/container/vector/reserve) | `cvector_reserve(v, new_cap)` |
 | [`v.resize(count)`](https://en.cppreference.com/w/cpp/container/vector/resize) | `cvector_resize(v, count)` |
+| [`v.data()`](https://en.cppreference.com/w/cpp/container/vector/data) | `cvector_data(v)` |
 | [`v.swap(other)`](https://en.cppreference.com/w/cpp/container/vector/swap) | `cvector_swap(v, other)` |
 | [`std::vector<int> other = v;`](https://en.cppreference.com/w/cpp/named_req/CopyConstructible) | `cvector(int) other; cvector_copy(v, other);` |
 
