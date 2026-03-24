@@ -345,6 +345,23 @@ UTEST(test, vector_resize) {
     cvector_free(a);
 }
 
+UTEST(test, vector_data) {
+    cvector_vector_type(int) int_vec = NULL;
+    int *ptr;
+
+    cvector_push_back(int_vec, 1);
+    cvector_push_back(int_vec, 2);
+    cvector_push_back(int_vec, 3);
+
+    ptr = cvector_data(int_vec);
+    ASSERT_NE(ptr, NULL);
+    ASSERT_EQ(ptr, int_vec);
+    ASSERT_EQ(ptr[0], 1);
+    ASSERT_EQ(ptr[1], 2);
+    ASSERT_EQ(ptr[2], 3);
+    cvector_free(int_vec);
+}
+
 struct data_t {
     int num;
     int a, b, c, d;

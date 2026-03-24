@@ -164,21 +164,5 @@ int main() {
 
     cvector_free(str_vect);
 
-    /* cvector_data */
-    {
-        int *ptr;
-        cvector_vector_type(int) int_vec = NULL;
-        cvector_push_back(int_vec, 1);
-        cvector_push_back(int_vec, 2);
-        cvector_push_back(int_vec, 3);
-        ptr = cvector_data(int_vec);
-        assert(ptr != NULL);
-        assert(ptr == int_vec);
-        assert(ptr[0] == 1);
-        assert(ptr[1] == 2);
-        assert(ptr[2] == 3);
-        cvector_free(int_vec);
-    }
-
     return 0;
 }
